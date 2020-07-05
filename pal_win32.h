@@ -161,12 +161,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	UINT id =  LOWORD(wParam);
+	HWND hSender = (HWND)lParam;
+
 	switch(uMsg)
 	{
 		case WM_COMMAND:
-			UINT id =  LOWORD(wParam);
-			HWND hSender = (HWND)lParam;
-
 			switch(id)
 			{
 				case 5:
@@ -609,7 +609,7 @@ void set_sound_playback_range(double time_begin, double time_end)
     t_start = time_begin;
     t_end = time_end;
     int delta = clamp((int)(t_start * (double)sample_rate), 0, music1_size-1);
-    header.lpData = smusic1 + delta;
+    header.lpData = (LPSTR)(smusic1 + delta);
     header.dwBufferLength = 4 * (music1_size-delta);
     waveOutPrepareHeader(hWaveOut, &header, sizeof(WAVEHDR));
     waveOutWrite(hWaveOut, &header, sizeof(WAVEHDR));

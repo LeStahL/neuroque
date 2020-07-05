@@ -21,6 +21,8 @@ project(neuroque)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Configurables
+# Set the module path to custom path where qt is
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "C:/Qt/5.15.0/msvc2019_64")
 set(MINIFY_64K ON CACHE BOOL "Compress the executable using kkrunchy7 (disables hybrid graphics dGPU exports)")
 
 # Tell CMake to run qt tools when necessary (For Qt5 GUIs among other things)
@@ -31,7 +33,7 @@ set(CMAKE_AUTOUIC ON)
 # Find the right python interpreter version
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-find_package(Qt5 COMPONENTS Widgets)
+find_package(Qt5 COMPONENTS Core Widgets Gui Multimedia)
 
 set(COMMON_HEADERS config_types.h config.h glext.h engine/platform.h engine/renderer.h engine/shader.h engine/loader.h engine/orchestrator.h engine/midi.h engine/debug.h)
 set(SFX_SHADER sfx.frag)
@@ -85,7 +87,7 @@ add_custom_target(texture_packing
 )
 
 add_executable(neuroque
-    ls.c
+    ls.cpp
     ${COMMON_HEADERS}
     ${DEMO_HEADERS}
     ${SFX_SHADER}
@@ -123,6 +125,7 @@ else()
     target_link_libraries(neuroque ${SDL2_LIBRARIES})
 endif()
 
+target_link_libraries(neuroque  Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Multimedia)
 
 #################################
 # Studio executable
@@ -159,4 +162,5 @@ if(WIN32)
     message("Found windeployqt executable: ${WINDEPLOYQT_EXECUTABLE}")
     message("Binary is in: $<TARGET_FILE_DIR:studio>")
     add_custom_command(TARGET studio COMMAND ${WINDEPLOYQT_EXECUTABLE} "$<TARGET_FILE:studio>")
+    add_custom_command(TARGET neuroque COMMAND ${WINDEPLOYQT_EXECUTABLE} "$<TARGET_FILE:neuroque>")
 endif()
