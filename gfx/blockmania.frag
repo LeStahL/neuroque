@@ -26,6 +26,34 @@ void rand(in vec2 x, out float n)
     n = fract(sin(dot(sign(x)*abs(x) ,vec2(12.9898,78.233)))*43758.5453);
 }
 
+void lfnoise(in vec2 t, out float n)
+{
+    vec2 i = floor(t);
+    t = fract(t);
+    t = smoothstep(c.yy, c.xx, t);
+    vec2 v1, v2;
+    rand(i, v1.x);
+    rand(i+c.xy, v1.y);
+    rand(i+c.yx, v2.x);
+    rand(i+c.xx, v2.y);
+    v1 = c.zz+2.*mix(v1, v2, t.y);
+    n = mix(v1.x, v1.y, t.x);
+}
+
+void mfnoise(in vec2 x, in float d, in float b, in float e, out float n)
+{
+    n = 0.;
+    float a = 1., nf = 0., buf;
+    for(float f = d; f<b; f *= 2.)
+    {
+        lfnoise(f*x, buf);
+        n += a*buf;
+        a *= e;
+        nf += 1.;
+    }
+    n *= (1.-e)/(1.-pow(e, nf));
+}
+
 void dbox3(in vec3 x, in vec3 b, out float d)
 {
   vec3 da = abs(x) - b;
@@ -597,11 +625,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     float nar, nara;
     // mfnoise(y.xy, 4., 2000., .45, nar);
-    mfnoise(y.xy-.1*iTime*c.xy, 5., 2000., .65, nara);
+    mfnoise(y.xy+.05*iTime*c.yx, 5., 2000., .65, nara);
 
     // col = mix(col,mix(vec3(0.67,0.13,0.18),vec3(0.06,0.36,0.38),length(y+.2*c.yyx)/.5), smoothstep(.5,-.4,length(y+.2*c.yyx)/.5));
     
-    if(col.r + col.g > .3)
+    if(abs(y.x) > .21)
     {
         // col = mix(col, mix(col,.02*c.xxx, .3), sm(abs(nar)-.01));
         col = mix(col, mix(col,vec3(0.35,0.47,0.63), .3), sm(abs(nar)-.004));
