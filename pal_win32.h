@@ -291,11 +291,11 @@ int WINAPI demo(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, in
 	WNDCLASS wca = { 0 };
 	wca.lpfnWndProc   = DialogProc;
 	wca.hInstance     = hInstance;
-	wca.lpszClassName = L"Settings";
+	wca.lpszClassName = (LPCSTR)L"Settings";
 	RegisterClass(&wca);
 	HWND lwnd = CreateWindowEx(
 		0,                              // Optional window styles.
-		L"Settings",                     // Window class
+		(LPCSTR)L"Settings",                     // Window class
 		demoname,    // Window text
 		WS_OVERLAPPEDWINDOW,            // Window style
 
@@ -386,7 +386,7 @@ int WINAPI demo(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, in
 					 lwnd, (HMENU) 11, hInstance, NULL);
     
     // Add record filename text field
-    char *capname[1024];
+    char capname[1024];
     sprintf(capname, "%s.cap", demoname);
     hRecordFilenameEdit = CreateWindow(WC_EDIT, capname, WS_VISIBLE | WS_CHILD | WS_BORDER ,100,150 ,175,25,lwnd, (HMENU) 12,NULL,NULL );
     EnableWindow(hRecordFilenameEdit, FALSE);

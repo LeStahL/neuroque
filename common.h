@@ -19,6 +19,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+
 const char *demoname = "Corona";
 
 #include "config.h"
@@ -51,7 +52,6 @@ const char *demoname = "Corona";
 
 
 #define clamp(x, minimum, maximum) min(max(x, minimum), maximum)
-
 
 #ifdef DEBUG
 #include <stdio.h>

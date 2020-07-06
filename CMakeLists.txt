@@ -125,7 +125,7 @@ else()
     target_link_libraries(neuroque ${SDL2_LIBRARIES})
 endif()
 
-target_link_libraries(neuroque  Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Multimedia)
+target_include_directories(neuroque PRIVATE "${CMAKE_SOURCE_DIR}/thirdparty/minimp3")
 
 #################################
 # Studio executable
@@ -162,5 +162,7 @@ if(WIN32)
     message("Found windeployqt executable: ${WINDEPLOYQT_EXECUTABLE}")
     message("Binary is in: $<TARGET_FILE_DIR:studio>")
     add_custom_command(TARGET studio COMMAND ${WINDEPLOYQT_EXECUTABLE} "$<TARGET_FILE:studio>")
-    add_custom_command(TARGET neuroque COMMAND ${WINDEPLOYQT_EXECUTABLE} "$<TARGET_FILE:neuroque>")
 endif()
+
+# Copy music and sounds to target folder
+add_custom_command(TARGET neuroque COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/msx" "$<TARGET_FILE_DIR:neuroque>/msx")
