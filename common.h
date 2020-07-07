@@ -35,6 +35,8 @@ const char *demoname = "Corona";
 #define TRUE (1)
 #define ABS(x) ((x)<0?(-x):(x))
 #define sign(x) ((x)<0?-1.:1.)
+#define MAX(x,y) (((x)>(y))?(x):(y))
+#define MIN(x,y) (((x)<(y))?(x):(y))
 
 #ifdef WIN32
 #	define WIN32_LEAN_AND_MEAN
@@ -188,6 +190,7 @@ unsigned int loading = 1, music_loading = 0;
 int music_block = 0;
 unsigned int snd_framebuffer;
 unsigned int start_at_scene = 0;
+int fixedSize;
 
 // Music shader globals
 int sample_rate = 44100, channels = 2;

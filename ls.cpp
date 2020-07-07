@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdint.h>
+
 #include "Windows.h"
 
 #define DEBUG // Shader debug i/o
@@ -292,6 +294,7 @@ void create_render_framebuffers()
 #define MINIMP3_IMPLEMENTATION
 #include <minimp3.h>
 #include <minimp3_ex.h>
+
 void load_compressed_sound()
 {
     mp3dec_ex_t dec;
@@ -341,13 +344,26 @@ void load_compressed_sound()
     }
 
     // Smooth da shit and convert from channels to scale; integrate scale to nbeats
-    scale = (double *) malloc(decs.samples*sizeof(float));
-    nBeats = (double *) malloc(decs.samples*sizeof(float));
+    fixedSize = min(dec.samples, decs.samples);
+    scale = (double *) malloc(fixedSize*sizeof(double));
+    nBeats = (double *) malloc(fixedSize*sizeof(double));
 
-    for(int i=0; i< decs.samples; ++i)
-    {
+    FILE *f = fopen("INTENSITY.12197", "rb");
+    fseek(f,0, SEEK_SET);
+    fread(scale, sizeof(double), fixedSize, f);
+    fclose(f);
 
-    }
+    // FILE *f = fopen("INTENSITY", "wt");
+    // for(int i=0; i< fixedSize; ++i)
+        // printf("%le\n", scale[i]);
+    // {
+    //         float *sample = smusic1+i;
+    //         int16_t *left = (int16_t *)sample,
+    //             *right = (int16_t *)(sample+1);
+    //         double dleft = (double)*left/(double)65535,
+    //             dright = (double)*right/(double)65535;
+    //         fprintf(f, "%le\n", sqrt(dleft*dleft + dright*dright));
+    // }
 
     progress += .3/nblocks1;
 }

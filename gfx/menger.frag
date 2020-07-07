@@ -14,6 +14,9 @@ uniform float iFader5;
 uniform float iFader6;
 uniform float iFader7;
 
+uniform float iScale;
+uniform float iNBeats;
+
 const float pi = acos(-1.);
 const vec3 c = vec3(1.,0.,-1.);
 const float box_size = .4,
@@ -585,11 +588,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     }
     
+
     // col = mix(col,mix(vec3(0.67,0.13,0.18),vec3(0.06,0.36,0.38),abs(y.y-.3)/.5), .3*smoothstep(-.5,.01,y.y-.3));
     
     // col = mix(.6*col,col*.01, smoothstep(-.25,.3,abs(y.y)));
     
     col = mix(col, c.yyy, smoothstep(.3,1.5,abs(uv.y/.5)));
+    col = mix(col, length(col)*c.xxx/sqrt(3.), iScale);
 
     fragColor = vec4(clamp(col,0.,1.),1.);
 }

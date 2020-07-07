@@ -125,8 +125,8 @@ void main()
     // Scan lines
     col += vec3(0., 0.05, 0.1)*sin(uv.y*1050.+ 5.*iTime);
     
-    scale(iTime,iScale);
-    col += .3*col*iScale*step(35.8321,iTime);
+    // scale(iTime,iScale);
+    // col += .3*col*iScale*step(35.8321,iTime);
     
     gl_FragColor = vec4(clamp(col, 0.,1.), 1.);
 }

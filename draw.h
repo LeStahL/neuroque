@@ -1,6 +1,11 @@
 #ifndef DRAW_HEADER
 #define DRAW_HEADER
 
+// Compute index from t
+int index = (int)(t/t_end * (double) fixedSize);
+index = MAX(index,0);
+index = MIN(index, fixedSize-1);
+
 if(t < t_corona)
 {
     glUseProgram(shader_program_gfx_logo210.handle);
@@ -38,6 +43,7 @@ else if(t < t_blockmania)
     glUseProgram(shader_program_gfx_menger.handle);
     glUniform1f(shader_uniform_gfx_menger_iTime, t-t_menger);
     glUniform2f(shader_uniform_gfx_menger_iResolution, w, h);
+
 #ifdef MIDI
     glUniform1f(shader_uniform_gfx_menger_iFader0, fader0);
     glUniform1f(shader_uniform_gfx_menger_iFader1, fader1);
@@ -48,6 +54,9 @@ else if(t < t_blockmania)
     glUniform1f(shader_uniform_gfx_menger_iFader6, fader6);
     glUniform1f(shader_uniform_gfx_menger_iFader7, fader7);
 #endif
+
+    glUniform1f(shader_uniform_gfx_menger_iScale, MAX(MIN(scale[index], 1.),0.));
+    glUniform1f(shader_uniform_gfx_menger_iNBeats, nBeats[index]);
 }
 else if(t < t_edgysphere)
 {

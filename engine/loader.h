@@ -1,6 +1,8 @@
 #ifndef LOADER_H
 #define LOADER_H
 
+#include <math.h>
+
 #include "renderer.h"
 #include "shader.h"
 
@@ -49,7 +51,7 @@ static void lDrawLoadingScreen()
 
     glUseProgram(shader_program_gfx_load.handle);
     glUniform2f(shader_uniform_gfx_load_iResolution, w, h);
-    glUniform1f(shader_uniform_gfx_load_iProgress, progress);
+    glUniform1f(shader_uniform_gfx_load_iProgress, fmin(fmax(progress,0.),1.));
 
     quad();
 }
