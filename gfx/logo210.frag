@@ -241,7 +241,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float d;
     vec3 c1 = .7*mix(vec3(0.18,0.16,0.15), vec3(0.11,0.09,0.18), clamp(iTime-7.661, 0., 1.)*(1.-clamp(iTime-14.185,0.,1.))/.5),
         c2 = .7*mix(vec3(0.91,0.30,0.24), vec3(0.21,0.30,0.94), clamp(iTime-7.661,0.,1.)*(1.-clamp(iTime-14.185,0.,1.))/.5);
-    for(float i=0.; i<mix(mix(200.,100., step(12.688,iTime)),300.,step(18.733+.5, iTime)); i+=1.)
+    for(float i=0.; i<mix(mix(200.,100., step(12.688,iTime)),200.,step(18.733+.5, iTime)); i+=1.)
     {
         float f, f0;
         lfnoise(6.*uv+.01*i*c.xx-2.3*iTime, f);
@@ -272,8 +272,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     col = mix(c.yyy, col, (
         clamp(iTime-3.367+.25, 0., 1.)
-        -clamp(iTime-12.688+1.5,0.,1.)
-        +clamp(iTime-12.688-1.5,0.,1.)
+        -clamp(iTime-12.688+1.,0.,1.)
+        +clamp(iTime-12.688,0.,1.)
         -clamp(iTime-45.337+.5,0.,1.)
     )/.5);
 
