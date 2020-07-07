@@ -16,7 +16,9 @@
         49.825      w                                   // Add Second Corona? Add 2d Virus overlay? TODO
         53.805      w, // letzter weich kram            // Begin slow glitching, increase to end of segment hard glitching
         60.718      h- // beginn geballer // semi hard cut // Show Menger Sponge. Text in lower half: "FUCKINGS TO MENGER". blend in between two beats
-        118.294     h // segmentwechsel                 // hard cut Show Block Mania, buildup, color change, distort, until half, hard cut Show Edgy sphere , buildup, change, distort until end
+                                                            and fade out again with the fractal. morph. show different fractals. cooler ones.
+        118.294     h // segmentwechsel                 // hard cut Show Block Mania, buildup, color change, distort, until half, hard cut Show Edgy sphere 
+                                                            buildup, change, distort until end
         153.875     h // segmentwechsel                 // hard cut Show Tentacles 
         194.633     w // beginn fadeout                 // Blend to Novoque Graffiti IFS
         203.012     w // ende track                     // Fade to black again

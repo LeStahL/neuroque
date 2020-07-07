@@ -2,29 +2,29 @@
 #define SCENES_HEADER
 
 #define t_logo210 (0)
-#define t_blockmania (12)
-#define t_edgysphere (35.83209991455078)
-#define t_tentacles (58.68920135498047)
-#define t_greets (81.54630279541016)
-#define t_credits (92.97489929199219)
-#define duration (101)
+#define t_corona (45.33700180053711)
+#define t_menger (60.71799850463867)
+#define t_blockmania (90)
+#define t_edgysphere (118.29399871826172)
+#define t_tentacles (153.875)
+#define duration (206)
 
 const double start_times[] = {
     t_logo210,
+    t_corona,
+    t_menger,
     t_blockmania,
     t_edgysphere,
     t_tentacles,
-    t_greets,
-    t_credits,
 };
 
 const char *scene_names[] = {
     "Logo 210",
-    "Block-Mania",
+    "Corona",
+    "Menger Sponge",
+    "Block Mania",
     "Edgy Sphere",
     "Tentacles",
-    "Greetings",
-    "Credits",
 };
 
 const unsigned int nscenes = ARRAYSIZE(start_times);
