@@ -192,11 +192,17 @@ float sm(in float d)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
+    if(iTime < 3.367-.25) 
+    {
+        fragColor = c.yyyx;
+        return;
+    }
+    
     vec2 uv = (fragCoord.xy-.5*iResolution.xy)/iResolution.y;
     vec3 col = c.yyy;
     float d;
-    const vec3 c1 = vec3(0.18,0.16,0.15),
-        c2 = vec3(0.91,0.30,0.24);
+    vec3 c1 = mix(vec3(0.18,0.16,0.15), vec3(0.03,0.09,0.28), clamp(iTime-7.661+.25, 0., 1.)/.5),
+        c2 = mix(vec3(0.91,0.30,0.24), .5*vec3(0.00,0.49,1.00), clamp(iTime-7.661+.25,0.,1.)/.5);
     for(float i=0.; i<200.; i+=1.)
     {
         float f, f0;
@@ -217,6 +223,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     dbox210_plane(uv, 1., da);
     // d = mix(d, da, clamp(1.-i/100.,0.,1.));
     col = mix(col, mix(col, c1, .5), sm(da));
+
+    col = mix(c.yyy, col, clamp(iTime-3.367+.25, 0., 1.)/.5);
 
     fragColor = vec4(clamp(col,0.,1.),1.0);
 }

@@ -302,7 +302,6 @@ void load_compressed_sound()
     }
 
     music1_size = dec.samples/2;
-    // smusic1 = (float*)malloc(4 * music1_size);
 
     smusic1 = (float*)malloc(dec.samples*sizeof(float));
     size_t read = mp3dec_ex_read(&dec, (mp3d_sample_t*)smusic1, dec.samples);
@@ -310,11 +309,47 @@ void load_compressed_sound()
     {
         if (dec.last_error)
         {
-            /* error */
+            printf("Irgendwas wurde verkackt mit msx.\n");
+            PostQuitMessage(0);
         }
     }
 
-    progress += .6/nblocks1;
+    progress += .3/nblocks1;
+
+    mp3dec_ex_t decs;
+    if (mp3dec_ex_open(&decs, "msx/NeuroqueDrumtrackDry.mp3", MP3D_SEEK_TO_SAMPLE))
+    {
+        printf("failed to decode dry msx. Will exit\n");
+        PostQuitMessage(0);
+    }
+
+    drums_raw = (float*)malloc(decs.samples*sizeof(float));
+    size_t reads = mp3dec_ex_read(&decs, (mp3d_sample_t*)drums_raw, decs.samples);
+    if (reads != decs.samples) /* normal eof or error condition */
+    {
+        if (decs.last_error)
+        {
+            printf("Irgendwas wurde verkackt mit dry msx.\n");
+            PostQuitMessage(0);
+        }
+    }
+
+    if(dec.samples != decs.samples) 
+    {
+        printf("Lol alla der fuck drumtrack passt nicht zum track, fix des mal.\n");
+        PostQuitMessage(0);
+    }
+
+    // Smooth da shit and convert from channels to scale; integrate scale to nbeats
+    scale = (double *) malloc(decs.samples*sizeof(float));
+    nBeats = (double *) malloc(decs.samples*sizeof(float));
+
+    for(int i=0; i< decs.samples; ++i)
+    {
+
+    }
+
+    progress += .3/nblocks1;
 }
 
 #ifdef DEBUG

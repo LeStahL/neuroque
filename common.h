@@ -192,7 +192,10 @@ unsigned int start_at_scene = 0;
 // Music shader globals
 int sample_rate = 44100, channels = 2;
 double duration1 = duration; //3 min running time
-float *smusic1;
+float *smusic1,
+    *drums_raw;
+double *scale,
+    *nBeats;
 int music1_size;
 float texs = 512;
 int block_size = 512 * 512,
