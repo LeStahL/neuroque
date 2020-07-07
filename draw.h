@@ -56,7 +56,7 @@ else if(t < t_blockmania)
 #endif
 
     glUniform1f(shader_uniform_gfx_menger_iScale, MAX(MIN(scale[index], 1.),0.));
-    glUniform1f(shader_uniform_gfx_menger_iNBeats, nBeats[index]);
+    // glUniform1f(shader_uniform_gfx_menger_iNBeats, nBeats[index]);
 }
 else if(t < t_edgysphere)
 {
@@ -73,6 +73,9 @@ else if(t < t_edgysphere)
     glUniform1f(shader_uniform_gfx_blockmania_iFader6, fader6);
     glUniform1f(shader_uniform_gfx_blockmania_iFader7, fader7);
 #endif
+
+    glUniform1f(shader_uniform_gfx_blockmania_iScale, MAX(MIN(scale[index], 1.),0.));
+    // glUniform1f(shader_uniform_gfx_blockmania_iNBeats, nBeats[index]);
 }
 else if(t < t_tentacles)
 {
@@ -89,6 +92,9 @@ else if(t < t_tentacles)
     glUniform1f(shader_uniform_gfx_edgysphere_iFader6, fader6);
     glUniform1f(shader_uniform_gfx_edgysphere_iFader7, fader7);
 #endif
+
+    glUniform1f(shader_uniform_gfx_edgysphere_iScale, MAX(MIN(scale[index], 1.),0.));
+    // glUniform1f(shader_uniform_gfx_edgysphere_iNBeats, nBeats[index]);
 }
 else {
     glUseProgram(shader_program_gfx_tentacles.handle);
@@ -104,5 +110,8 @@ else {
     glUniform1f(shader_uniform_gfx_tentacles_iFader6, fader6);
     glUniform1f(shader_uniform_gfx_tentacles_iFader7, fader7);
 #endif
+
+    glUniform1f(shader_uniform_gfx_tentacles_iScale, MAX(MIN(scale[index], 1.),0.));
+    // glUniform1f(shader_uniform_gfx_tentacles_iNBeats, nBeats[index]);
 }
 #endif

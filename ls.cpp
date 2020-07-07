@@ -346,11 +346,11 @@ void load_compressed_sound()
     // Smooth da shit and convert from channels to scale; integrate scale to nbeats
     fixedSize = min(dec.samples, decs.samples);
     scale = (double *) malloc(fixedSize*sizeof(double));
-    nBeats = (double *) malloc(fixedSize*sizeof(double));
+    // nBeats = (double *) malloc(fixedSize*sizeof(double));
 
     FILE *f = fopen("INTENSITY.12197", "rb");
     fseek(f,0, SEEK_SET);
-    fread(scale, sizeof(double), fixedSize, f);
+    fread(scale, sizeof(double), fixedSize-1, f);
     fclose(f);
 
     // FILE *f = fopen("INTENSITY", "wt");
@@ -461,6 +461,7 @@ void load_font()
 // Pure opengl drawing code, essentially cross-platform
 void draw()
 {
+    // Render scene to buffer
     glBindFramebuffer(GL_FRAMEBUFFER, first_pass_framebuffer);
     
     t = t_now;
@@ -480,7 +481,16 @@ void draw()
     
     quad();
 
-    // Render post processing to buffer
+    // Render text to buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, first_pass_framebuffer);
+
+#include "text.h"
+    
+    quad();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // Render post processing to screen
     glUseProgram(shader_program_gfx_post.handle);
     glUniform2f(shader_uniform_gfx_post_iResolution, w, h);
     glUniform1f(shader_uniform_gfx_post_iFSAA, fsaa);
@@ -498,35 +508,6 @@ void draw()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 #endif 
 
-    
-    glUseProgram(shader_program_gfx_text.handle);
-    glUniform2f(shader_uniform_gfx_text_iResolution, w, h);
-    glUniform1f(shader_uniform_gfx_text_iFontWidth, font_texture_size);
-    glUniform1f(shader_uniform_gfx_text_iTime, t);
-    glUniform1i(shader_uniform_gfx_text_iChannel0, 0);
-    glUniform1i(shader_uniform_gfx_text_iFont, 1);
-    glUniform1f(shader_uniform_gfx_text_iFSAA, fsaa);
-    
-#ifdef MIDI
-//     glUniform1f(shader_uniform_gfx_text_iFader0, faders[0]);
-//     glUniform1f(shader_uniform_gfx_text_iFader1, faders[1]);
-//     glUniform1f(shader_uniform_gfx_text_iFader2, faders[2]);
-//     glUniform1f(shader_uniform_gfx_text_iFader3, faders[3]);
-//     glUniform1f(shader_uniform_gfx_text_iFader4, faders[4]);
-//     glUniform1f(shader_uniform_gfx_text_iFader5, faders[5]);
-//     glUniform1f(shader_uniform_gfx_text_iFader6, faders[6]);
-//     glUniform1f(shader_uniform_gfx_text_iFader7, faders[7]);
-#endif
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, first_pass_texture);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, font_texture_handle);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, font_texture_size, font_texture_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    
-    quad();
     
 #ifdef DEBUG
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

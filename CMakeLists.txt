@@ -40,14 +40,19 @@ set(SFX_SHADER sfx.frag)
 set(SHADER_FILES
         gfx/load.frag
         gfx/logo210.frag
+        gfx/logo210text.frag
         gfx/blockmania.frag
+        gfx/blockmaniatext.frag
         gfx/edgysphere.frag
+        gfx/edgyspheretext.frag
         gfx/tentacles.frag
-        gfx/text.frag
+        gfx/tentaclestext.frag
         gfx/post.frag
         gfx/debug.frag
         gfx/corona.frag
+        gfx/coronatext.frag
         gfx/menger.frag
+        gfx/mengertext.frag
 )
 set(SHADER_SYMBOLS_PATH gfx/symbols/)
 set(STRINGS_FILE font/strings.txt)

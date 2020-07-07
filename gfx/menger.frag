@@ -142,7 +142,7 @@ void main_scene(in vec3 x, out vec2 sdf)
 	x = R * x;
     
 	float d = 1., da, db,
-    size = .8;
+    size = mix(.7,.8,iScale);
     
     dbox3(x, size/3.*c.xxx, d);
     float d0 = d;
@@ -424,7 +424,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     bool isa = false;
     vec2 dnf;
-    analytical_box(R*o, R*dir, .8/3.*c.xxx, dnf.x);
+    analytical_box(R*o, R*dir, mix(.7,.8,iScale)/3.*c.xxx, dnf.x);
     if(dnf.x < 10.)
     {
         d = dnf.x;
@@ -453,7 +453,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         dir0 = reflect(dir, n);
         d0 = .01;
 
-        analytical_box(R*o0, R*dir0, .8/3.*c.xxx, dnf.x);
+        analytical_box(R*o0, R*dir0, mix(.7,.8,iScale)/3.*c.xxx, dnf.x);
         if(dnf.x < 10.)
         {
             d0 = dnf.x;
@@ -489,7 +489,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     d = 1.e-2;
     // analytical_box(o, dir, box_size*c.xxx, d);
     
-    analytical_box(R*o, R*dir, .8/3.*c.xxx, dnf.x);
+    analytical_box(R*o, R*dir, mix(.7,.8,iScale)/3.*c.xxx, dnf.x);
     if(dnf.x < 10.)
     {
         d = dnf.x;
@@ -522,7 +522,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     d = 1.e-2;
     // analytical_box(o, dir, box_size*c.xxx, d);
     
-    analytical_box(R*o, R*dir, .8/3.*c.xxx, dnf.x);
+    analytical_box(R*o, R*dir, mix(.7,.8,iScale)/3.*c.xxx, dnf.x);
     if(dnf.x < 10.)
     // if(d < 1.e2)
     {
@@ -594,7 +594,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // col = mix(.6*col,col*.01, smoothstep(-.25,.3,abs(y.y)));
     
     col = mix(col, c.yyy, smoothstep(.3,1.5,abs(uv.y/.5)));
-    col = mix(col, length(col)*c.xxx/sqrt(3.), iScale);
+    // col = mix(col, length(col)*c.xxx/sqrt(3.), iScale);
+
+    col = mix(col, col * col, iScale);
 
     fragColor = vec4(clamp(col,0.,1.),1.);
 }

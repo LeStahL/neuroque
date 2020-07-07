@@ -14,6 +14,9 @@ uniform float iFader5;
 uniform float iFader6;
 uniform float iFader7;
 
+uniform float iScale;
+uniform float iNBeats;
+
 const float pi = acos(-1.);
 const vec3 c = vec3(1.,0.,-1.);
 const float box_size = .4,

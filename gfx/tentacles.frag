@@ -14,6 +14,9 @@ uniform float iFader5;
 uniform float iFader6;
 uniform float iFader7;
 
+uniform float iScale;
+uniform float iNBeats;
+
 const float pi = acos(-1.);
 const vec3 c = vec3(1.,0.,-1.);
 const float box_size = .4,
@@ -186,10 +189,10 @@ void main_scene(in vec3 x, out vec2 sdf)
         dps = mod(ps, 2.*csize)-csize,
         dpsj = ps-dps;
     
-    add(sdf, vec2((length(R*x.yz-(.15+.15*x.x*x.x)*vec2(cos(dpsj), sin(dpsj)))-.005-.04*x.x)-.01, 3.), sdf);
-    add(sdf, vec2((length(R*x.yz-.15*c.yx)-.03-.06*x.x)-.01, 7.), sdf);
-    add(sdf, vec2((length(R*x.yz-.19*c.zx)-.03-.07*x.x)-.01, 6.), sdf);
-    add(sdf, vec2((length(R*x.yz-.1*c.yx)-.03-.04*x.x-.01*sin(iTime-5.*x.x))-.01, 4.), sdf);
+    add(sdf, vec2((length(R*x.yz-(.15+.15*x.x*x.x)*vec2(cos(dpsj), sin(dpsj)))-.005-.04*x.x)-.01-.01*iScale, 3.), sdf);
+    add(sdf, vec2((length(R*x.yz-.15*c.yx)-.03-.06*x.x)-.01-.01*iScale, 7.), sdf);
+    add(sdf, vec2((length(R*x.yz-.19*c.zx)-.03-.07*x.x)-.01-.01*iScale, 6.), sdf);
+    add(sdf, vec2((length(R*x.yz-.1*c.yx)-.03-.04*x.x-.01*sin(iTime-5.*x.x)-.01*iScale)-.01, 4.), sdf);
 }
 
 
@@ -576,6 +579,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     col = mix(.6*col,col*.01, smoothstep(-.25,.3,abs(y.y)));
     
     col = mix(col, c.yyy, smoothstep(.3,1.5,abs(uv.y/.5)));
+    // col = mix(col, col.brg, iScale);
 
     fragColor = vec4(clamp(col,0.,1.),1.);
 }
