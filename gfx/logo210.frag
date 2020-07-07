@@ -1,7 +1,6 @@
 uniform float iTime;
 uniform vec2 iResolution;
 
-
 const float pi = acos(-1.);
 const vec3 c = vec3(1.,0.,-1.);
 
@@ -211,14 +210,17 @@ void spline_ifs(in vec2 uv, in float i, out float d)
 
     float da;
     if(iTime < 12.688)
+    {
 	    dbox210_plane(uv, 1., da);
-    else 
+        d = mix(d, da, mix(.97,0.,clamp(iTime-18.733,0.,1.)/.5));
+    }
+    else if(iTime < 18.733+.5)
     {
         dnovoque(.7*uv, da);
         da /= .7;
         da = abs(da)-.02;
+        d = mix(d, da, mix(.97,0.,clamp(iTime-18.733,0.,1.)/.5));
     }
-    d = mix(d, da, .97);
 }
 
 float sm(in float d)
@@ -237,9 +239,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = (fragCoord.xy-.5*iResolution.xy)/iResolution.y;
     vec3 col = c.yyy;
     float d;
-    vec3 c1 = .7*mix(vec3(0.18,0.16,0.15), vec3(0.03,0.09,0.28), clamp(iTime-7.661+.25, 0., 1.)/.5),
-        c2 = .7*mix(vec3(0.91,0.30,0.24), vec3(0.21,0.30,0.94), clamp(iTime-7.661+.25,0.,1.)/.5);
-    for(float i=0.; i<200.; i+=1.)
+    vec3 c1 = .7*mix(vec3(0.18,0.16,0.15), vec3(0.11,0.09,0.18), clamp(iTime-7.661, 0., 1.)*(1.-clamp(iTime-14.185,0.,1.))/.5),
+        c2 = .7*mix(vec3(0.91,0.30,0.24), vec3(0.21,0.30,0.94), clamp(iTime-7.661,0.,1.)*(1.-clamp(iTime-14.185,0.,1.))/.5);
+    for(float i=0.; i<mix(mix(200.,100., step(12.688,iTime)),300.,step(18.733+.5, iTime)); i+=1.)
     {
         float f, f0;
         lfnoise(6.*uv+.01*i*c.xx-2.3*iTime, f);
@@ -250,15 +252,15 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         spline_ifs(R*(uv-.0002*i),.01*i,d);
         mfnoise(i*c.xx-f-iTime, 3.,1000., .25, f0);
         f0 = mix(0., f0, clamp(1.-i/1000.,0.,1.));
-	    col = mix(col, mix(c1, c2,.5-.5*f), mix(f*mix(.01,.02,.5+.5*f-f0)*sm((abs(d)-.0005)/16./(15.5+.5*f)), sm(abs(d)-.0005), .06));
-	    col = mix(col, mix(2.*c1, 2.*c2, .5+.5*f), mix(abs(f)*.2*sm((abs(abs(d)-.0005)-.0001)/2./(15.5+.5*f)), sm(abs(d-.0005)-.0001), .06));
+	    col = mix(col, mix(c1, c2,.5-.5*f), mix(f*mix(.01,.02,.5+.5*f-f0)*sm((abs(d)-.0005)/16./(15.5+.5*f)), sm(abs(d)-.0005), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
+	    col = mix(col, mix(2.*c1, 2.*c2, .5+.5*f), mix(abs(f)*.2*sm((abs(abs(d)-.0005)-.0001)/2./(15.5+.5*f)), sm(abs(d-.0005)-.0001), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
     }
     col = 2.*col + 2.*col * col + 3.* col * col * col;
 
     float da;
     if(iTime < 12.688)
 	    dbox210_plane(uv, 1., da);
-    else 
+    else //if(iTime < 18.733+.5)
     {
         dnovoque(.7*uv, da);
         da /= .7;
@@ -266,12 +268,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     }
     // d = mix(d, da, clamp(1.-i/100.,0.,1.));
     col = mix(col, .6*mix(col, length(col)/sqrt(3.)*c.xxx, .5), sm(da));
+// *(1.-clamp(iTime-12.688+.5,0.,1.))*clamp(iTime-12.688-.5,0.,1.)
 
-    col = mix(c.yyy, col, clamp(iTime-3.367+.25, 0., 1.)/.5);
+    col = mix(c.yyy, col, (
+        clamp(iTime-3.367+.25, 0., 1.)
+        -clamp(iTime-12.688+1.5,0.,1.)
+        +clamp(iTime-12.688-1.5,0.,1.)
+        -clamp(iTime-45.337+.5,0.,1.)
+    )/.5);
 
     fragColor = vec4(clamp(col,0.,1.),1.0);
 }
-
 
 void main()
 {

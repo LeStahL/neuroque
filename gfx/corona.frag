@@ -678,6 +678,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     col = mix(col, mix(col, vec3(0.87,0.05,0.43), .3+.1*nar), sm((length(uv)-.4)/215.));
     col = mix(col, mix(col, vec3(0.00,0.49,0.54), .3+.1*nar), 1.-sm((length(uv)-.9)/55.));
     
+    col = mix(c.yyy, col, (
+        clamp(iTime, 0., 1.)
+    )/.5);
+
     // col = mix(col, mix(col, vec3(0.38,0.82,0.80), .3), clamp((length(uv)-.5)/.5,0.,1.));
     fragColor = vec4(clamp(col,0.,1.),1.);
 }
