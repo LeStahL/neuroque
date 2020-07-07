@@ -206,7 +206,7 @@ void spline_ifs(in vec2 uv, in float i, out float d)
     // lfnoise(uv+5337.-iTime+i,p2.y);
     vec2 a = vec2(iResolution.x/iResolution.y,1.);
     // dspline2(uv*a, p0, p1, p2, d);
-    dlinesegment(uv*a, p0, p1, d);
+    dlinesegment(uv*a.yx, p0, p1, d);
 
     float da;
     if(iTime < 12.688)
@@ -239,8 +239,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec2 uv = (fragCoord.xy-.5*iResolution.xy)/iResolution.y;
     vec3 col = c.yyy;
     float d;
-    vec3 c1 = .7*mix(vec3(0.18,0.16,0.15), vec3(0.11,0.09,0.18), clamp(iTime-7.661, 0., 1.)*(1.-clamp(iTime-14.185,0.,1.))/.5),
-        c2 = .7*mix(vec3(0.91,0.30,0.24), vec3(0.21,0.30,0.94), clamp(iTime-7.661,0.,1.)*(1.-clamp(iTime-14.185,0.,1.))/.5);
+    vec3 c1 = mix(.7,1., clamp(iTime-18.733,0.,45.337-18.733)/(45.337-18.733))*mix(vec3(0.18,0.16,0.15), vec3(0.11,0.09,0.18), clamp(iTime-7.661, 0., 1.)*(1.-clamp(iTime-14.185,0.,1.))/.5),
+        c2 = mix(.7,1.2, clamp(iTime-18.733,0.,45.337-18.733)/(45.337-18.733))*mix(vec3(0.91,0.30,0.24), vec3(0.21,0.30,0.94), clamp(iTime-7.661,0.,1.)*(1.-clamp(iTime-14.185,0.,1.))/.5);
     for(float i=0.; i<mix(mix(200.,100., step(12.688,iTime)),200.,step(18.733+.5, iTime)); i+=1.)
     {
         float f, f0;
@@ -253,7 +253,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         mfnoise(i*c.xx-f-iTime, 3.,1000., .25, f0);
         f0 = mix(0., f0, clamp(1.-i/1000.,0.,1.));
 	    col = mix(col, mix(c1, c2,.5-.5*f), mix(f*mix(.01,.02,.5+.5*f-f0)*sm((abs(d)-.0005)/16./(15.5+.5*f)), sm(abs(d)-.0005), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
-	    col = mix(col, mix(2.*c1, 2.*c2, .5+.5*f), mix(abs(f)*.2*sm((abs(abs(d)-.0005)-.0001)/2./(15.5+.5*f)), sm(abs(d-.0005)-.0001), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
+	    col = mix(col, mix(2.*c1, 2.*c2, .5+.5*f), mix(abs(f)*.2*sm((abs(abs(d)-.0005)-.0001)/2./(15.5+.5*f)), sm(abs(d-.0005)-.0002), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
     }
     col = 2.*col + 2.*col * col + 3.* col * col * col;
 
@@ -274,7 +274,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         clamp(iTime-3.367+.25, 0., 1.)
         -clamp(iTime-12.688+1.,0.,1.)
         +clamp(iTime-12.688,0.,1.)
-        -clamp(iTime-45.337+.5,0.,1.)
+        -clamp(iTime-49.825+.5,0.,1.)
     )/.5);
 
     fragColor = vec4(clamp(col,0.,1.),1.0);

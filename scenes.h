@@ -2,7 +2,7 @@
 #define SCENES_HEADER
 
 #define t_logo210 (0)
-#define t_corona (45.33700180053711)
+#define t_corona (49.82500076293945)
 #define t_menger (60.71799850463867)
 #define t_blockmania (90)
 #define t_edgysphere (118.29399871826172)

@@ -659,19 +659,24 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         col = mix(col, mix(col, 2.*col, .3), sm(abs(abs(y.y-.3)-.21)-.05));
         col = mix(col, mix(col, .1*col, .3), sm(abs(abs(abs(y.y-.3)-.21)-.05)-.002));
 
-        const float dsize = .1;
-        vec2 co = vec2(mod(y.x,dsize)-.5*dsize, y.y+.25+.5*y.x*y.x*y.x);
-        d = length(co)-.01;
-        d0 = length(co-dsize*c.xy)-.01;
-        d = min(d,d0);
-        d0 = length(co-dsize*c.xy)-.01;
-        d = min(d,d0);
+        float n;
+        float t = floor(5.*x), 
+            tp1 = ceil(5.*x);
         
-        col = mix(col, mix(col, vec3(1.00,0.91,0.69), .3), sm(d));
-        col = mix(col, mix(col, .1*col, .3), sm(abs(d)-.002));
 
-        col = mix(col, mix(col, vec3(0.87,0.05,0.43), .3), sm(abs(d-.02)-.004));
-        col = mix(col, mix(col, .1*col, .3), sm(abs(abs(d-.02)-.004)-.002));
+        // const float dsize = .1;
+        // vec2 co = vec2(mod(y.x,dsize)-.5*dsize, y.y+.25+.5*y.x*y.x*y.x);
+        // d = length(co)-.01;
+        // d0 = length(co-dsize*c.xy)-.01;
+        // d = min(d,d0);
+        // d0 = length(co-dsize*c.xy)-.01;
+        // d = min(d,d0);
+        
+        // col = mix(col, mix(col, vec3(1.00,0.91,0.69), .3), sm(d));
+        // col = mix(col, mix(col, .1*col, .3), sm(abs(d)-.002));
+
+        // col = mix(col, mix(col, vec3(0.87,0.05,0.43), .3), sm(abs(d-.02)-.004));
+        // col = mix(col, mix(col, .1*col, .3), sm(abs(abs(d-.02)-.004)-.002));
     }
 
     
