@@ -649,19 +649,24 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // col = mix(col,mix(vec3(0.67,0.13,0.18),vec3(0.06,0.36,0.38),length(y+.2*c.yyx)/.5), smoothstep(.5,-.4,length(y+.2*c.yyx)/.5));
     if(isa)
     {
+        float ran;
+        float t = floor(5.*x.x), 
+            tp1 = ceil(5.*x.x);
+        vec2 ra;
+        rand(t*c.xx, ra.x);
+        rand(tp1*c.xx, ra.y);
+        ran = mix(ra.x,ra.y, fract(5.*x.x));
+
         col *= 1.3/5.;
         // col = mix(col, mix(col,.02*c.xxx, .3), sm(abs(nar)-.01));
         col = mix(col, mix(col,vec3(0.35,0.47,0.63), .3), sm(abs(nar)-.004));
         col = mix(col, .02*col, abs(nara)-.1);
         
         
-        col = mix(col, mix(col, 2.*col, .5), sm(abs(y.y-.3)-.21));
-        col = mix(col, mix(col, 2.*col, .3), sm(abs(abs(y.y-.3)-.21)-.05));
-        col = mix(col, mix(col, .1*col, .3), sm(abs(abs(abs(y.y-.3)-.21)-.05)-.002));
+        col = mix(col, mix(col, 2.*col, .5), sm(abs(y.y+.3-ran)-.21));
+        col = mix(col, mix(col, 2.*col, .3), sm(abs(abs(y.y+.3-ran)-.21)-.05));
+        col = mix(col, mix(col, .1*col, .3), sm(abs(abs(abs(y.y+.3-ran)-.21)-.05)-.002));
 
-        float n;
-        float t = floor(5.*x), 
-            tp1 = ceil(5.*x);
         
 
         // const float dsize = .1;

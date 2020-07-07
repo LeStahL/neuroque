@@ -208,7 +208,11 @@ void spline_ifs(in vec2 uv, in float i, out float d)
     // dspline2(uv*a, p0, p1, p2, d);
     dlinesegment(uv*a.yx, p0, p1, d);
 
-    float da;
+    float da = abs(length(uv-p0)-.005)-.001;
+    d = mix(d, min(d,da), clamp(iTime-26.454, 0., 1.)/.5);
+    da = abs(length(uv-p1)-.005)-.001;
+    d = mix(d, min(d,da), clamp(iTime-26.454, 0., 1.)/.5);
+
     if(iTime < 12.688)
     {
 	    dbox210_plane(uv, 1., da);
@@ -252,7 +256,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         spline_ifs(R*(uv-.0002*i),.01*i,d);
         mfnoise(i*c.xx-f-iTime, 3.,1000., .25, f0);
         f0 = mix(0., f0, clamp(1.-i/1000.,0.,1.));
-	    col = mix(col, mix(c1, c2,.5-.5*f), mix(f*mix(.01,.02,.5+.5*f-f0)*sm((abs(d)-.0005)/16./(15.5+.5*f)), sm(abs(d)-.0005), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
+	    col = mix(col, mix(c1, c2,.5-.5*f), mix(f*mix(.01,.02,.5+.5*f-f0)*sm((abs(d)-.0005)/16./(15.5+.5*f)), sm((abs(d)-.0005)/mix(1.,10., clamp(iTime-18.733,0.,45.337-18.733)/(45.337-18.733))), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
 	    col = mix(col, mix(2.*c1, 2.*c2, .5+.5*f), mix(abs(f)*.2*sm((abs(abs(d)-.0005)-.0001)/2./(15.5+.5*f)), sm(abs(d-.0005)-.0002), mix(.06,.09,clamp(iTime-16.160,0.,1.)/.5)));
     }
     col = 2.*col + 2.*col * col + 3.* col * col * col;
