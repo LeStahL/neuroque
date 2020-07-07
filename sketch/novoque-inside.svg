@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="286.45898mm"
+   height="53.625mm"
+   viewBox="0 0 286.45898 53.625"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="novoque-inside.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="626.90711"
+     inkscape:cy="85.610678"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4751"
+       originx="320.50003"
+       originy="-134.58398" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(320.5,-108.79102)">
+    <path
+       style="opacity:1;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:22.67716599;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
+       d="M 36.03125 22.677734 L 22.677734 36.039062 L 22.677734 126.64453 L 36.039062 140.00586 L 79.998047 140.00586 L 79.998047 103.9668 L 116.03516 140.00586 L 146.64062 140.00586 L 160.00195 126.64453 L 160.00195 36.039062 L 146.64062 22.677734 L 102.67383 22.677734 L 102.67383 58.714844 L 66.644531 22.677734 L 36.03125 22.677734 z M 216.03125 22.677734 L 202.67773 36.039062 L 202.67773 126.64453 L 216.03906 140.00586 L 326.64062 140.00586 L 340.00195 126.64453 L 340.00195 36.039062 L 326.64062 22.677734 L 216.03125 22.677734 z M 396.03125 22.677734 L 382.67773 36.039062 L 382.67773 106.64648 L 416.03516 140.00586 L 486.64453 140.00586 L 520.00195 106.64648 L 520.00195 36.039062 L 506.64062 22.677734 L 476.03516 22.677734 L 462.67383 36.039062 L 462.67383 62.679688 L 439.99805 62.679688 L 439.99805 36.039062 L 426.64453 22.677734 L 396.03125 22.677734 z M 576.03125 22.677734 L 562.67773 36.039062 L 562.67773 126.64453 L 576.03906 140.00586 L 686.64062 140.00586 L 700.00195 126.64453 L 700.00195 36.039062 L 686.64062 22.677734 L 576.03125 22.677734 z M 756.03125 22.677734 L 742.67773 36.039062 L 742.67773 126.64453 L 756.03906 140.00586 L 791.33789 140.00586 L 822.67383 140.00586 L 822.67383 166.64648 L 836.03516 180 L 866.64062 180 L 880.00195 166.64648 L 880.00195 36.039062 L 866.64062 22.677734 L 756.03125 22.677734 z M 936.03125 22.677734 L 922.67773 36.039062 L 922.67773 126.64453 L 936.03906 140.00586 L 1046.6406 140.00586 L 1060.002 126.64453 L 1060.002 116.03516 L 1035.3027 91.34375 L 1060.002 66.644531 L 1060.002 36.039062 L 1046.6406 22.677734 L 936.03125 22.677734 z M 979.99805 40.001953 L 1002.6738 40.001953 L 1002.6738 51.341797 L 1002.6738 71.337891 L 1002.6738 82.677734 L 979.99805 82.677734 L 979.99805 71.337891 L 979.99805 51.341797 L 979.99805 40.001953 z M 259.99805 60 L 282.67383 60 L 282.67383 102.68164 L 259.99805 102.68164 L 259.99805 60 z M 619.99805 60 L 642.67383 60 L 642.67383 71.337891 L 642.67383 91.34375 L 642.67383 102.68164 L 619.99805 102.68164 L 619.99805 91.34375 L 619.99805 71.337891 L 619.99805 60 z M 799.99805 60 L 822.67383 60 L 822.67383 71.337891 L 822.67383 91.34375 L 822.67383 102.68164 L 799.99805 102.68164 L 799.99805 91.34375 L 799.99805 71.337891 L 799.99805 60 z "
+       transform="matrix(0.26458333,0,0,0.26458333,-320.5,108.79102)"
+       id="path8553" />
+  </g>
+</svg>

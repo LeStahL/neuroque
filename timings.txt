@@ -1,0 +1,33 @@
+        0.          h // start                          // Text: A FUCKING Invitation /  Hintergrund schwartz
+        3.367       w                                   // Blend in Logo210
+        7.661       w                                   // Change palette to other cyber / blu? 
+        9.217       w                                   // Text: QM NR4 ATLAS blend in slow
+        12.688      w                                   // Move to Novoque IFS
+        18.733      w+ // soft cut? instrumentation     // Move to IFS Gewaber
+        26.454      w                                   // Change Color & Add overlay geraffel. glitch post. Change IFS.
+        30.045      w                                   // Change Color again & morph overlay geraffel. Change IFS. Glitch Post.
+        33.217      w- // kleinscheiß                   // Fade to Black
+        34.593      w-                                  // Text: (Durchgestrichen)"Evoke" (ohne strike)"Novoque"
+        37.885      w                                   // Text: "Online. 7-15-2020." below list with compos: "PC Demo. PC 64k-Intro. 
+                                                            PC 4k-Intro. Alternative Executable. Dance Music In The Mix. Animation.
+                                                            Graphics. One-Screen ANSI/ASCII."
+        42.105      w                                   // Add post processing, still show text
+        45.337      w                                   // Show Corona Scene
+        49.825      w                                   // Add Second Corona? Add 2d Virus overlay? TODO
+        53.805      w, // letzter weich kram            // Begin slow glitching, increase to end of segment hard glitching
+        60.718      h- // beginn geballer // semi hard cut // Show Menger Sponge. Text in lower half: "FUCKINGS TO MENGER". blend in between two beats
+        118.294     h // segmentwechsel                 // hard cut Show Block Mania, buildup, color change, distort, until half, hard cut Show Edgy sphere , buildup, change, distort until end
+        153.875     h // segmentwechsel                 // hard cut Show Tentacles 
+        194.633     w // beginn fadeout                 // Blend to Novoque Graffiti IFS
+        203.012     w // ende track                     // Fade to black again
+        206.000     w // ende demo
+
+scenez
+- Logo 210 + IFS
+- Block Mania
+- Corona
+- Edgy Sphere
+- Menger
+- Tentacles
+- TODO Greetings short <-- greetings in text irgendwo reinmoguln
+- TODO Novoque Graffiti
