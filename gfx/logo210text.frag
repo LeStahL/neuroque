@@ -23,6 +23,7 @@ uniform sampler2D iChannel0;
 uniform float iScale;
 uniform float iNBeats;
 
+out vec4 gl_FragColor;
 
 const vec3 c = vec3(1.,0.,-1.);
     

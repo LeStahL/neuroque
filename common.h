@@ -210,7 +210,8 @@ char record_filename[1024];
 
 double t_paused;
 
-GLuint first_pass_framebuffer = 0, first_pass_texture;
+GLuint first_pass_framebuffer = 0, first_pass_texture,
+    second_pass_framebuffer = 0, second_pass_texture;
 GLenum error;
 #define NSHADERS 4.
 

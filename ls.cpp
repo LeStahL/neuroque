@@ -485,6 +485,8 @@ void draw()
     glBindFramebuffer(GL_FRAMEBUFFER, first_pass_framebuffer);
 
 #include "text.h"
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, first_pass_texture);
     
     quad();
 
@@ -496,6 +498,7 @@ void draw()
     glUniform1f(shader_uniform_gfx_post_iFSAA, fsaa);
     glUniform1i(shader_uniform_gfx_post_iChannel0, 0);
     glUniform1f(shader_uniform_gfx_post_iTime, t);
+    glUniform1f(shader_uniform_gfx_post_iScale, MAX(MIN(scale[index], 1.),0.));
     
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, first_pass_texture);
@@ -510,15 +513,15 @@ void draw()
 
     
 #ifdef DEBUG
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
         
-    glUseProgram(shader_program_gfx_debug.handle);
-    glUniform1i(shader_uniform_gfx_debug_iShowDebugInfo, showDebugWindow);
-    glUniform2f(shader_uniform_gfx_debug_iResolution, w, h);
-    glUniform1f(shader_uniform_gfx_debug_iFontWidth, font_texture_size);
-    glUniform1f(shader_uniform_gfx_debug_iTime, t);
-    glUniform1i(shader_uniform_gfx_debug_iChannel0, 0);
-    glUniform1i(shader_uniform_gfx_debug_iFont, 1);
+    // glUseProgram(shader_program_gfx_debug.handle);
+    // glUniform1i(shader_uniform_gfx_debug_iShowDebugInfo, showDebugWindow);
+    // glUniform2f(shader_uniform_gfx_debug_iResolution, w, h);
+    // glUniform1f(shader_uniform_gfx_debug_iFontWidth, font_texture_size);
+    // glUniform1f(shader_uniform_gfx_debug_iTime, t);
+    // glUniform1i(shader_uniform_gfx_debug_iChannel0, 0);
+    // glUniform1i(shader_uniform_gfx_debug_iFont, 1);
     
 #ifdef MIDI
 //     glUniform1f(shader_uniform_gfx_debug_iFader0, faders[0]);
@@ -540,15 +543,15 @@ void draw()
 //     glUniform1f(shader_uniform_gfx_debug_iDial7, dials[7]);
 #endif
     
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, first_pass_texture);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//     glActiveTexture(GL_TEXTURE0);
+//     glBindTexture(GL_TEXTURE_2D, first_pass_texture);
+// //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, font_texture_handle);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, font_texture_size, font_texture_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//     glActiveTexture(GL_TEXTURE1);
+//     glBindTexture(GL_TEXTURE_2D, font_texture_handle);
+// //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, font_texture_size, font_texture_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     
-    quad();
+//     quad();
 #endif
     
 #if defined RECORD

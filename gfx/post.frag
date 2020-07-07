@@ -21,15 +21,13 @@ uniform float iFSAA;
 uniform vec2 iResolution;
 uniform sampler2D iChannel0;
 uniform float iTime;
+uniform float iScale;
+uniform float iNBeats;
 
 out vec4 gl_FragColor;
 
 const vec3 c = vec3(1.,0.,-1.);
 const float pi = acos(-1.);
-
-float iScale, nBeats;
-void scale(in float time, out float s);
-void nbeats(in float time, out float n);;
 
 void rand(in vec2 x, out float n)
 {

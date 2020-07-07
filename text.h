@@ -1,11 +1,6 @@
 #ifndef TEXT_HEADER
 #define TEXT_HEADER    
 
-// Compute index from t
-int index = (int)(t/t_end * (double) fixedSize);
-index = MAX(index,0);
-index = MIN(index, fixedSize-1);
-
 if(t < t_corona)
 {
     glUseProgram(shader_program_gfx_logo210text.handle);
@@ -54,9 +49,5 @@ else {
     glUniform1f(shader_uniform_gfx_tentaclestext_iScale, MAX(MIN(scale[index], 1.),0.));
     // glUniform1f(shader_uniform_gfx_tentacles_iNBeats, nBeats[index]);
     glUniform1i(shader_uniform_gfx_tentaclestext_iChannel0, 0);
-}
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, first_pass_texture);
-    
+}   
 #endif
