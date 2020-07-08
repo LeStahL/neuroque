@@ -173,6 +173,26 @@ void rot3(in vec3 p, out mat3 rot)
         *mat3(cos(p.z), -sin(p.z), 0., sin(p.z), cos(p.z), c.yyyx);
 }
 
+
+vec3 rgb2hsv(vec3 c)
+{
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+// All components are in the range [0…1], including hue.
+vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
 void main_scene(in vec3 x, out vec2 sdf)
 {
     float nara;
@@ -208,7 +228,14 @@ void main_scene(in vec3 x, out vec2 sdf)
     // rot3(vec3(1.1,1.3,1.6), Re);
 
             dbox3_wireframe(Rx*z, .05*c.xxx, .003, da);
+
+            float db, dc;
+            dbox3(Rx*z,.05*c.xxx, db);
+            da = mix(da, db, clamp(iTime-12.010+.25,0.,.5)/.5);
             float co;
+            dc = length(z)-.03;
+            da = mix(da, dc, clamp(iTime-22.071+.25,0.,.5)/.5);
+
             rand(pj, co);
 
             add(sdf, vec2(abs(da)-.001, 3.+co), sdf);
@@ -483,8 +510,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     illuminate(x, n, dir, l2, c1, s);
     col = mix(col, c1, .5);
     
+    bool isa = false;
     if(s.y == 0.)
     {
+        isa = true;
         o0 = x;
         dir0 = reflect(dir, n);
         d0 = .01;
@@ -600,7 +629,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     col = mix(col,mix(vec3(0.67,0.13,0.18),vec3(0.06,0.36,0.38),length(y+.2*c.yyx)/.5), smoothstep(.5,-.4,length(y+.2*c.yyx)/.5));
     
-    if(col.r + col.g < .3)
+    if(isa)
     {
         col = mix(col, mix(col,.02*c.xxx, .3), sm(abs(nar)-.01));
         col = mix(col, mix(col,vec3(0.35,0.47,0.63), .3), sm(abs(nar)-.004));
@@ -614,6 +643,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     col = mix(col, mix(col, vec3(0.91,0.31,0.24), .3+.1*nar), sm((length(uv)-.4)/115.));
     // col = mix(col, mix(col, vec3(0.38,0.82,0.80), .3), clamp((length(uv)-.5)/.5,0.,1.));
+
+    vec3 hsv = rgb2hsv(col);
+    hsv.x = mix(.5,.33, clamp(iTime-22.071+.25,0.,.5)/.5);
+    col = mix(col, hsv2rgb(hsv), clamp(iTime-12.010+.25,0.,.5)/.5);
+
     fragColor = vec4(clamp(col,0.,1.),1.);
 }
 
