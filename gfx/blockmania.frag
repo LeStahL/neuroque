@@ -169,7 +169,7 @@ void dsmoothpolygon(in vec2 x, in float N, in float s, out float ret)
 void main_scene(in vec3 x, out vec2 sdf)
 {
 
-    x.y += .4*iTime;
+    x.y += mix(.4,.8,clamp(iTime-12.838+.25, 0., 1.)/.5)*iTime;
     
     sdf = vec2(x.z+.4, 0.);
     
@@ -190,7 +190,7 @@ void main_scene(in vec3 x, out vec2 sdf)
         vec3 z = mod(y, vec3(size*c.xx,0.))-.5*vec3(size*c.xx, 0.),
 	        zi = y - z;
         rand((yi.xy+13.*zi.xy), ra);
-        dbox3(z+.4*c.yyx, vec3(.45*size*c.xx,.3*ra), d);
+        dbox3(z+.4*c.yyx, vec3(.45*size*c.xx,mix(0.,.3*ra,clamp(iTime+.25-6.434, 0., .5)/.5)), d);
         rand(zi.xy+yi.xy-1337., rb);
         add(sdf, vec2(d-.005,3.+floor(5.*rb)), sdf);
         
@@ -200,7 +200,7 @@ void main_scene(in vec3 x, out vec2 sdf)
             vec3 w = mod(z, vec3(size*c.xx,0.))-.5*vec3(size*c.xx, 0.),
                 wi = z - w;
             rand((yi.xy+13.*zi.xy+26.*wi.xy), ra);
-            dbox3(w+.4*c.yyx, vec3(.45*size*c.xx,.3*ra), d);
+            dbox3(w+.4*c.yyx, vec3(.45*size*c.xx,mix(0.,.3*ra,clamp(iTime+.25-9.681, 0., .5)/.5)), d);
             rand(zi.xy+yi.xy+wi.xy-1337., rb);
             add(sdf, vec2(d-.005,3.+floor(5.*rb)), sdf);
         }
@@ -210,11 +210,11 @@ void main_scene(in vec3 x, out vec2 sdf)
 	    
         
     	rand(yi.xy-2337., rb);
-        dbox3(y+.4*c.yyx, vec3(.47*size*c.xx,.3*ra), d);
+        dbox3(y+.4*c.yyx, vec3(.47*size*c.xx,mix(0.,.3*ra,clamp(iTime-3.202+.25, 0., .5)/.5)), d);
     	if(rb<.5)
     	{
             
-            dbox3_wireframe(y+.4*c.yyx, vec3(.4*size*c.xx,.3*ra), .09*size, d);
+            dbox3_wireframe(y+.4*c.yyx, vec3(.4*size*c.xx,mix(0.,.3*ra, clamp(iTime-3.202+.25, 0., .5)/.5)), .09*size, d);
     		// d = max(d,-da);
 			  	add(sdf, vec2(d-.005,1.), sdf);
 
@@ -322,35 +322,35 @@ void illuminate(in vec3 x, in vec3 n, in vec3 dir, in vec3 l, inout vec3 col, in
     }
     else if(s.y == 3.)
     {
-        col = .1*vec3(0.18,0.16,0.20);
+        col = .1*mix(vec3(0.18,0.16,0.20), vec3(0.38,0.36,0.39), clamp(iTime-21.651+.25, 0., 1.)/.5);
         col = .7*col
             + .8*col*max(dot(l-x,n),0.)
             + .3*col*pow(max(dot(reflect(l-x,n),dir),0.),1.);
     }
     else if(s.y == 4.)
     {
-        col = vec3(0.52,0.24,0.24);
+        col = mix(vec3(0.52,0.24,0.24), vec3(0.65,0.35,0.36), clamp(iTime-21.651+.25, 0., 1.)/.5);
         col = .7*col
             + .8*col*max(dot(l-x,n),0.)
             + .3*col*pow(max(dot(reflect(l-x,n),dir),0.),1.);
     }
     else if(s.y == 5.)
     {
-        col = .2*vec3(0.08,0.65,0.86);
+        col = .2*mix(vec3(0.08,0.65,0.86), vec3(0.96,0.41,0.35), clamp(iTime-21.651+.25, 0., 1.)/.5);
         col = .7*col
             + .8*col*max(dot(l-x,n),0.)
             + 1.3*col*pow(max(dot(reflect(l-x,n),dir),0.),1.);
     }
     else if(s.y == 6.)
     {
-        col = .2*vec3(0.62,0.60,0.60);
+        col = .2*mix(vec3(0.62,0.60,0.60), vec3(0.93,0.68,0.30), clamp(iTime-21.651+.25, 0., 1.)/.5);
         col = .7*col
             + .8*col*max(dot(l-x,n),0.)
             + 1.3*col*pow(max(dot(reflect(l-x,n),dir),0.),1.);
     }
     else if(s.y == 7.)
     {
-        col = .4*vec3(0.82,0.12,0.21);
+        col = .4*mix(vec3(0.82,0.12,0.21),.1*c.xxx, clamp(iTime-21.651+.25, 0., 1.)/.5);
         col = .7*col
             + .8*col*max(dot(l-x,n),0.)
             + 1.3*col*pow(max(dot(reflect(l-x,n),dir),0.),1.);
@@ -511,6 +511,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     l = vec3(-1.3,.3,.6);
     l2 = vec3(-1.3,-.3,.6);
     
+    bool isa = false;
+    if(s.y == 0.) isa = true;
+
 //    if(i<N)
     {
         main_normal(x, n, 5.e-5);
@@ -628,12 +631,31 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     float nar, nara;
     // mfnoise(y.xy, 4., 2000., .45, nar);
-    mfnoise(y.xy+.05*iTime*c.yx, 5., 2000., .65, nara);
+    mfnoise(y.xy+mix(.05,.1,clamp(iTime-12.838+.25, 0., 1.)/.5)*iTime*c.yx, 5., 2000., .65, nara);
 
     // col = mix(col,mix(vec3(0.67,0.13,0.18),vec3(0.06,0.36,0.38),length(y+.2*c.yyx)/.5), smoothstep(.5,-.4,length(y+.2*c.yyx)/.5));
     
-    if(abs(y.x) > .21)
+    if(isa)
     {
+        float ran;
+        float t = floor(12.*y.y), 
+            tp1 = ceil(12.*y.y);
+        vec2 ra;
+        rand(t*c.xx, ra.x);
+        rand(tp1*c.xx, ra.y);
+        ran = mix(ra.x,ra.y, fract(12.*y.y));
+
+        col *= 1.3/5.;
+        // col = mix(col, mix(col,.02*c.xxx, .3), sm(abs(nar)-.01));
+        col = mix(col, mix(col,vec3(0.35,0.47,0.63), .3), sm(abs(nar)-.004));
+        col = mix(col, .02*col, abs(nara)-.1);
+        
+        
+        col = mix(col, mix(col, 2.*col, .5), sm(abs(y.y+.3-ran)-.21));
+        col = mix(col, mix(col, 2.*col, .3), sm(abs(abs(y.y+.3-ran)-.21)-.05));
+        col = mix(col, mix(col, .1*col, .3), sm(abs(abs(abs(y.y+.3-ran)-.21)-.05)-.002));
+
+
         // col = mix(col, mix(col,.02*c.xxx, .3), sm(abs(nar)-.01));
         col = mix(col, mix(col,vec3(0.35,0.47,0.63), .3), sm(abs(nar)-.004));
         col = mix(col, .02*col, abs(nara)-.1);

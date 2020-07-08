@@ -402,6 +402,25 @@ void dmercury(in vec2 x, out float d)
     d = -d;
 }
 
+vec3 rgb2hsv(vec3 c)
+{
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+// All components are in the range [0…1], including hue.
+vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // POSITION_EPSILON_MINIMUM = 1.5/iResolution.y;
@@ -547,16 +566,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // Gamma
     col = .5*col + .6*col*col + .4*col*col*col;
     col *= 1.3;
-    
-    // glow;
-    //col = mix(col, 2.*col,sm(1.e-2*max(dot(reflect(l-x,n),dir),0.)));
-    
-    // blakk borders
-    
-    // col = mix(col, length(col)/sqrt(3.)*c.xxx, .7);
-
-    // Scan lines
-    //col += .8*vec3(0., 0.05, 0.1)*sin(uv.y*1550.);
 
     float nar, nara;
     // mfnoise(y.xy, 4., 2000., .45, nar);
@@ -581,7 +590,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     col = mix(col, c.yyy, smoothstep(.3,1.5,abs(uv.y/.5)));
     // col = mix(col, col.brg, iScale);
 
-    col = mix(c.yyy, col, clamp(iTime-203.012,0.,1.)/.5);
+    col = mix(c.yyy, col, 1.-clamp(iTime-49.137,0.,1.)/.5);
+
+    vec3 hsv = rgb2hsv(col);
+    hsv.x = mix(.5,.33, clamp(iTime-12.105,0.,.5)/.5);
+    col = mix(col, hsv2rgb(hsv), clamp(iTime-5.910,0.,.5)/.5);
 
     fragColor = vec4(clamp(col,0.,1.),1.);
 }
@@ -590,6 +603,3 @@ void main()
 {
     mainImage(gl_FragColor, gl_FragCoord.xy);
 }
-
-
-

@@ -111,7 +111,7 @@ void main()
     col = c2;
     
     // Add stripes
-    col = mix(col, mix(col,c.yyy,.7), sm(abs(uv.y-.45)-.04));
+    // col = mix(col, mix(col,c.yyy,.7), sm(abs(uv.y-.45)-.04));
     
     // grid lines
     vec2 y = mod(uv, .025)-.0125;
