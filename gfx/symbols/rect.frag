@@ -1,5 +1,7 @@
 void dboxcombo(in vec2 x, in vec2 b, in float distort, inout float d);
+void rot(in float phi, out mat2 R);
 
+#define PIXEL .005
 void rect(in vec2 uv, in vec4 rect, in vec2 shift, in float phi, in float scale, in float distort, inout float d)
     {
         mat2 R;

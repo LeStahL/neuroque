@@ -1,4 +1,4 @@
-float lpnoise(in float t, in float g, out float r);
+void lpnoise(in float t, in float g, out float r);
 
 void lp2dnoise(in float t, out vec2 n)
     {

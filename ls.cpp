@@ -20,8 +20,9 @@
 
 #include "Windows.h"
 
-#define DEBUG // Shader debug i/o
-// #define DEBUG_SHADER // Shader compile and link errors
+#include <stdio.h>
+#define DEBUG        // Shader debug i/o
+#define DEBUG_SHADER // Shader compile and link errors
 // #define MIDI // APC40 mkII controls
 #define RECORD // Compile in recording capabilities
 

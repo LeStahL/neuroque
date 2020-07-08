@@ -125,16 +125,16 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
     glyph_dot(uv,shift+vec2(-67.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(-62.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(-57.*spac,-9.),phi,scale,distort,d);
-    glyph_lelzeichen(uv,shift+vec2(-51.*spac,-9.),phi,scale,distort,d);
+    // glyph_lelzeichen(uv,shift+vec2(-51.*spac,-9.),phi,scale,distort,d);
     glyph_n(uv,shift+vec2(-43.*spac,-9.),phi,scale,distort,d);
     glyph_o(uv,shift+vec2(-31.*spac,-9.),phi,scale,distort,d);
-    glyph_lelzeichen(uv,shift+vec2(-19.*spac,-9.),phi,scale,distort,d);
+    // glyph_lelzeichen(uv,shift+vec2(-19.*spac,-9.),phi,scale,distort,d);
     glyph_e(uv,shift+vec2(-11.*spac,-9.),phi,scale,distort,d);
     glyph_v(uv,shift+vec2(-1.*spac,-9.),phi,scale,distort,d);
     glyph_o(uv,shift+vec2(11.*spac,-9.),phi,scale,distort,d);
     glyph_k(uv,shift+vec2(23.*spac,-9.),phi,scale,distort,d);
     glyph_e(uv,shift+vec2(33.*spac,-8.),phi,scale,distort,d);
-    glyph_lelzeichen(uv,shift+vec2(43.*spac,-9.),phi,scale,distort,d);
+    // glyph_lelzeichen(uv,shift+vec2(43.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(51.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(56.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(61.*spac,-9.),phi,scale,distort,d);
@@ -149,7 +149,8 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
         float blur = 1.;
         
         // TAKE CARE OF THIS
-        float t = mod(iTime, 10.);
+        // float t = mod(iTime, 10.);
+        float t = iTime;
         float shift_t = 0.;
         
         float y = -52. + 4.4*(t-shift_t) * exp(-.1*(t-shift_t));
