@@ -11,8 +11,10 @@ for line in content:
     data += [ float(line) ]
 
 print("Filtering.")
-window = 12197
-filtered = scipy.signal.savgol_filter(data, window, 3)
+# window = 5
+# filtered = scipy.signal.savgol_filter(data[:100], window, 3)
+analytic_signal = scipy.signal.hilbert(data)
+filtered = numpy.abs(analytic_signal)
 
 print("Plotting.")
 figure = matplotlib.pyplot.figure()
@@ -27,6 +29,6 @@ print("Saving.")
 with open("build/Release/INTENSITY." + str(window), "wb") as f:
     f.write(struct.pack('d'*len(filtered), *filtered))
     f.close()
-
+x
 print("Done.")
 input()

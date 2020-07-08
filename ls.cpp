@@ -43,7 +43,7 @@ int _fltused = 0;
 // Standard library and CRT rewrite for saving executable size
 void *memset(void *ptr, int value, size_t num)
 {
-    for(int i=num-1; i>=0; i--)
+    for (int i = num - 1; i >= 0; i--)
         ((unsigned char *)ptr)[i] = value;
     return ptr;
 }
@@ -51,7 +51,8 @@ void *memset(void *ptr, int value, size_t num)
 size_t strlen(const char *str)
 {
     int len = 0;
-    while(str[len] != '\0') ++len;
+    while (str[len] != '\0')
+        ++len;
     return len;
 }
 
@@ -304,10 +305,10 @@ void load_compressed_sound()
         PostQuitMessage(0);
     }
 
-    music1_size = dec.samples/2;
+    music1_size = dec.samples / 2;
 
-    smusic1 = (float*)malloc(dec.samples*sizeof(float));
-    size_t read = mp3dec_ex_read(&dec, (mp3d_sample_t*)smusic1, dec.samples);
+    smusic1 = (float *)malloc(dec.samples * sizeof(float));
+    size_t read = mp3dec_ex_read(&dec, (mp3d_sample_t *)smusic1, dec.samples);
     if (read != dec.samples) /* normal eof or error condition */
     {
         if (dec.last_error)
@@ -317,17 +318,17 @@ void load_compressed_sound()
         }
     }
 
-    progress += .3/nblocks1;
+    progress += .3 / nblocks1;
 
     mp3dec_ex_t decs;
-    if (mp3dec_ex_open(&decs, "msx/NeuroqueDrumtrackDry.mp3", MP3D_SEEK_TO_SAMPLE))
+    if (mp3dec_ex_open(&decs, "msx/NeuroqueDrumtrackDryFiltered.mp3", MP3D_SEEK_TO_SAMPLE))
     {
         printf("failed to decode dry msx. Will exit\n");
         PostQuitMessage(0);
     }
 
-    drums_raw = (float*)malloc(decs.samples*sizeof(float));
-    size_t reads = mp3dec_ex_read(&decs, (mp3d_sample_t*)drums_raw, decs.samples);
+    drums_raw = (float *)malloc(decs.samples * sizeof(float));
+    size_t reads = mp3dec_ex_read(&decs, (mp3d_sample_t *)drums_raw, decs.samples);
     if (reads != decs.samples) /* normal eof or error condition */
     {
         if (decs.last_error)
@@ -337,7 +338,7 @@ void load_compressed_sound()
         }
     }
 
-    if(dec.samples != decs.samples) 
+    if (dec.samples != decs.samples)
     {
         printf("Lol alla der fuck drumtrack passt nicht zum track, fix des mal.\n");
         PostQuitMessage(0);
@@ -345,27 +346,28 @@ void load_compressed_sound()
 
     // Smooth da shit and convert from channels to scale; integrate scale to nbeats
     fixedSize = min(dec.samples, decs.samples);
-    scale = (double *) malloc(fixedSize*sizeof(double));
+    scale = (double *)malloc(fixedSize * sizeof(double));
     // nBeats = (double *) malloc(fixedSize*sizeof(double));
 
-    FILE *f = fopen("INTENSITY.12197", "rb");
-    fseek(f,0, SEEK_SET);
-    fread(scale, sizeof(double), fixedSize-1, f);
-    fclose(f);
+    // FILE *f = fopen("INTENSITY.12197", "rb");
+    // fseek(f, 0, SEEK_SET);
+    // fread(scale, sizeof(double), fixedSize - 1, f);
+    // fclose(f);
 
-    // FILE *f = fopen("INTENSITY", "wt");
-    // for(int i=0; i< fixedSize; ++i)
-        // printf("%le\n", scale[i]);
-    // {
-    //         float *sample = smusic1+i;
-    //         int16_t *left = (int16_t *)sample,
-    //             *right = (int16_t *)(sample+1);
-    //         double dleft = (double)*left/(double)65535,
-    //             dright = (double)*right/(double)65535;
-    //         fprintf(f, "%le\n", sqrt(dleft*dleft + dright*dright));
-    // }
+    FILE *f = fopen("INTENSITY", "wt");
+    for (int i = 0; i < fixedSize; ++i)
+    // // printf("%le\n", scale[i]);
+    {
+        float *sample = smusic1 + i;
+        int16_t *left = (int16_t *)sample,
+                *right = (int16_t *)(sample + 1);
+        double dleft = (double)*left / (double)65535,
+               dright = (double)*right / (double)65535;
+        // fprintf(f, "%le\n", sqrt(dleft * dleft + dright * dright));
+        scale[i] = sqrt(dleft * dleft + dright * dright);
+    }
 
-    progress += .3/nblocks1;
+    progress += .3 / nblocks1;
 }
 
 #ifdef DEBUG
@@ -373,7 +375,7 @@ void load_compressed_sound()
 void load_debug_output()
 {
     // Initialize keyboard texture
-    glGenTextures(1, (GLuint*)&debug_output_texture_handle);
+    glGenTextures(1, (GLuint *)&debug_output_texture_handle);
     glBindTexture(GL_TEXTURE_2D, debug_output_texture_handle);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -405,7 +407,7 @@ void load_demo()
 
     lLoadAllSymbols();
 #ifdef DEBUG_SHADER
-    for(unsigned int symbolIndex = 0; symbolIndex < lNumberOfSymbols; ++symbolIndex)
+    for (unsigned int symbolIndex = 0; symbolIndex < lNumberOfSymbols; ++symbolIndex)
     {
         if (shader_symbols[symbolIndex].compileStatus != GL_TRUE)
         {
@@ -434,10 +436,10 @@ void load_demo()
 
     updateBar();
 
-	glUseProgram(0);
+    glUseProgram(0);
 
-	initialize_sound();
-    
+    initialize_sound();
+
 #ifdef MIDI
     initControllers();
 #endif
@@ -447,7 +449,7 @@ void load_font()
 {
     // Initialize font texture
     printf("font texture width is: %d\n", font_texture_size); // TODO: remove
-    glGenTextures(1, (GLuint*)&font_texture_handle);
+    glGenTextures(1, (GLuint *)&font_texture_handle);
     glBindTexture(GL_TEXTURE_2D, font_texture_handle);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -455,7 +457,7 @@ void load_font()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, font_texture_size, font_texture_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, font_texture);
 
-    progress += .1/NSHADERS;
+    progress += .1 / NSHADERS;
 }
 
 // Pure opengl drawing code, essentially cross-platform
@@ -463,22 +465,22 @@ void draw()
 {
     // Render scene to buffer
     glBindFramebuffer(GL_FRAMEBUFFER, first_pass_framebuffer);
-    
+
     t = t_now;
-    if(t > t_end)
+    if (t > t_end)
     {
         ExitProcess(0);
     }
-    
+
 #ifdef MIDI
-    if(time_dial != 0 ||  time_fine_dial != 0 || time_very_fine_dial != 0)
+    if (time_dial != 0 || time_fine_dial != 0 || time_very_fine_dial != 0)
     {
-        t = t_now + (.9*time_dial+.09*time_fine_dial+.01*time_very_fine_dial) * duration;
+        t = t_now + (.9 * time_dial + .09 * time_fine_dial + .01 * time_very_fine_dial) * duration;
     }
 #endif
-    
+
 #include "draw.h"
-    
+
     quad();
 
     // Render text to buffer
@@ -487,7 +489,7 @@ void draw()
 #include "text.h"
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, first_pass_texture);
-    
+
     quad();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -498,23 +500,22 @@ void draw()
     glUniform1f(shader_uniform_gfx_post_iFSAA, fsaa);
     glUniform1i(shader_uniform_gfx_post_iChannel0, 0);
     glUniform1f(shader_uniform_gfx_post_iTime, t);
-    glUniform1f(shader_uniform_gfx_post_iScale, MAX(MIN(scale[index], 1.),0.));
-    
+    glUniform1f(shader_uniform_gfx_post_iScale, MAX(MIN(scale[index], 1.), 0.));
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, first_pass_texture);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
     quad();
-    
+
 #if !defined DEBUG
     // Render to screen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#endif 
+#endif
 
-    
 #ifdef DEBUG
     // glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
+
     // glUseProgram(shader_program_gfx_debug.handle);
     // glUniform1i(shader_uniform_gfx_debug_iShowDebugInfo, showDebugWindow);
     // glUniform2f(shader_uniform_gfx_debug_iResolution, w, h);
@@ -522,7 +523,7 @@ void draw()
     // glUniform1f(shader_uniform_gfx_debug_iTime, t);
     // glUniform1i(shader_uniform_gfx_debug_iChannel0, 0);
     // glUniform1i(shader_uniform_gfx_debug_iFont, 1);
-    
+
 #ifdef MIDI
 //     glUniform1f(shader_uniform_gfx_debug_iFader0, faders[0]);
 //     glUniform1f(shader_uniform_gfx_debug_iFader1, faders[1]);
@@ -532,7 +533,7 @@ void draw()
 //     glUniform1f(shader_uniform_gfx_debug_iFader5, faders[5]);
 //     glUniform1f(shader_uniform_gfx_debug_iFader6, faders[6]);
 //     glUniform1f(shader_uniform_gfx_debug_iFader7, faders[7]);
-//     
+//
 //     glUniform1f(shader_uniform_gfx_debug_iDial0, dials[0]);
 //     glUniform1f(shader_uniform_gfx_debug_iDial1, dials[1]);
 //     glUniform1f(shader_uniform_gfx_debug_iDial2, dials[2]);
@@ -542,30 +543,27 @@ void draw()
 //     glUniform1f(shader_uniform_gfx_debug_iDial6, dials[6]);
 //     glUniform1f(shader_uniform_gfx_debug_iDial7, dials[7]);
 #endif
-    
+
 //     glActiveTexture(GL_TEXTURE0);
 //     glBindTexture(GL_TEXTURE_2D, first_pass_texture);
 // //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    
+
 //     glActiveTexture(GL_TEXTURE1);
 //     glBindTexture(GL_TEXTURE_2D, font_texture_handle);
 // //     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, font_texture_size, font_texture_size, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    
+
 //     quad();
 #endif
-    
+
 #if defined RECORD
     // Gen filename
-    if(recording)
+    if (recording)
     {
         char filename[1024];
         sprintf(filename, "%s\\frame%06d.bmp", record_filename, frame);
         screenshot(filename);
     }
 #endif
-    
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-
-
