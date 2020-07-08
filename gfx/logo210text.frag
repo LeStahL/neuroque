@@ -212,7 +212,7 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
                 glyph_n(uv,shift+vec2(-46.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_o(uv,shift+vec2(-34.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_lelzeichen(uv,shift+vec2(-22.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_e(uv,shift+vec2(-14.*spac,-9.),phi,scale,alpha,distort,d);
+        glyph_e(uv,shift+vec2(-14.*spac,-9.),phi,sca,le,alpha,distort,d);
         glyph_v(uv,shift+vec2(-4.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_o(uv,shift+vec2(8.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_k(uv,shift+vec2(20.*spac,-9.),phi,scale,alpha,distort,d);
@@ -259,64 +259,7 @@ float bpm = 148.797; //162.00
 
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
-        float t = mod(iTime, 15.);
-        vec2 uv = (fragCoord.xy-.5*iResolution.xy)/iResolution.y; // qm hack
-        
-        vec3 col = c.xxx;
-        float dst = .93;
-        vec2 rndshift;
-        float decay = 1.;
-        float alpha = .7;
-        float scale = 1.;
-        float stutter = 1.;
-        float spac = 1.;
-        lf2dnoise(vec2(2.*iTime, 4.*iTime), rndshift);
-        rndshift *= 1.7 * decay; 
-        float start_t = 0.;
-        if (t < 3.) {
-            alpha *= clamp(2.*(t-start_t), 0., 1.) * exp(-(t-start_t));
-        	phrase_dotdotdotnolelzeichenevokequestschn(uv,vec2(0.,0.),0.,scale,alpha,1.,dst,1.,col);
-//        	phrase_dotdotdotnolelzeichenevokequestschn(uv,rndshift,0.,scale,alpha,1.,dst,1.,col);
-        } else if (t < 6.) {
-            start_t = 3.;
-            stutter = (t - start_t < 0.2) ? round(fract(100.*t)) : 1.;
-            scale = 1.2 + (t - start_t) * 4.;
-            alpha = .7*exp(-4.*(t-start_t));
-            rndshift *= .7;
-            spac = 1.-.2*(t-start_t);
-        	phrase_NOVOQUE(uv,-rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-        	phrase_NOVOQUE(uv,rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-            if (t > 3.5) {
-                start_t = 3.5;
-        	    scale = 1.2 + (t - start_t) * 4.;
-    	        alpha = .7*exp(-4.*(t-start_t));
-	            rndshift *= 1.7;
-    	    	phrase_NOVOQUE(uv,-rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-	        	phrase_NOVOQUE(uv,rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-            }   
-        } else if (t < 9.) {
-            start_t = 6.;
-            stutter = (fract(t - start_t) < 0.2) ? round(fract(100.*t)) : 1.;
-            decay = 1. - (t - start_t < .5 ? fract(t*2.) : exp(-(t-start_t)));
-            alpha *= decay*stutter;
-        	phrase_nolelzeichenevokedot(uv,vec2(0.,0.),0.,scale,alpha,1.,dst,1.,col);
-        	phrase_nolelzeichenevokedot(uv,.3*rndshift,0.,scale,alpha,1.,dst,1.,col);
-        } else if (t < 15.) {
-            spac = 1. + 10. * exp(-9.*(t-9.));
-            float help = 1./spac;
-            float rnd1;
-            lpnoise(iTime, 100., rnd1);
-            alpha = help * 1.3 * rnd1;
-            phrase_Augustlelzeichen15th(uv,vec2(0.,-10.),0.,spac,alpha,help*help,.93,spac,col);
-            if (t > 12.){
-            	spac = 1. + 10. * exp(-9.*(t-12.));
-                help = 1./spac;
-            	phrase_Onlineeggsclamation(uv,vec2(0.,8.),0.,spac,alpha,help*help,.93,spac,col);
-            }
-        }
-        vec4 old = texture(iChannel0, fragCoord.xy/iResolution.xy);
-        fragColor = mix(old, mix(old, c.xxxx, 1.), 1.-col.r);
-        //fragColor = vec4(clamp(c.xxx - col,0.,1.),1.); // qm hack fragColor -> gl_FragColor
+        fragColor = texture(iChannel0, fragCoord.xy);
     }    
 
 void main()

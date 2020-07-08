@@ -1,0 +1,4 @@
+void rect(in vec2 uv, in vec4 rect, in vec2 shift, in float phi, in float scale, in float distort, inout float d);
+void glyph_m(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, inout float d){
+rect(uv,vec4(1,5,1,9),shift,phi,scale,distort,d);rect(uv,vec4(3,6,3,2),shift,phi,scale,distort,d);rect(uv,vec4(8,6,1,2),shift,phi,scale,distort,d);rect(uv,vec4(0,7,1,8),shift,phi,scale,distort,d);rect(uv,vec4(0,7,3,2),shift,phi,scale,distort,d);rect(uv,vec4(0,7,11,1),shift,phi,scale,distort,d);rect(uv,vec4(6,7,1,7),shift,phi,scale,distort,d);rect(uv,vec4(6,7,2,2),shift,phi,scale,distort,d);rect(uv,vec4(9,7,2,2),shift,phi,scale,distort,d);rect(uv,vec4(10,7,1,8),shift,phi,scale,distort,d);rect(uv,vec4(9,8,3,1),shift,phi,scale,distort,d);rect(uv,vec4(10,8,2,5),shift,phi,scale,distort,d);rect(uv,vec4(5,9,1,6),shift,phi,scale,distort,d);rect(uv,vec4(9,13,2,2),shift,phi,scale,distort,d);
+}
