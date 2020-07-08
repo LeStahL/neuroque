@@ -125,16 +125,16 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
     glyph_dot(uv,shift+vec2(-67.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(-62.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(-57.*spac,-9.),phi,scale,distort,d);
-    // glyph_lelzeichen(uv,shift+vec2(-51.*spac,-9.),phi,scale,distort,d);
+    glyph_lelzeichen(uv,shift+vec2(-51.*spac,-9.),phi,scale,distort,d);
     glyph_n(uv,shift+vec2(-43.*spac,-9.),phi,scale,distort,d);
     glyph_o(uv,shift+vec2(-31.*spac,-9.),phi,scale,distort,d);
-    // glyph_lelzeichen(uv,shift+vec2(-19.*spac,-9.),phi,scale,distort,d);
+    glyph_lelzeichen(uv,shift+vec2(-19.*spac,-9.),phi,scale,distort,d);
     glyph_e(uv,shift+vec2(-11.*spac,-9.),phi,scale,distort,d);
     glyph_v(uv,shift+vec2(-1.*spac,-9.),phi,scale,distort,d);
     glyph_o(uv,shift+vec2(11.*spac,-9.),phi,scale,distort,d);
     glyph_k(uv,shift+vec2(23.*spac,-9.),phi,scale,distort,d);
     glyph_e(uv,shift+vec2(33.*spac,-8.),phi,scale,distort,d);
-    // glyph_lelzeichen(uv,shift+vec2(43.*spac,-9.),phi,scale,distort,d);
+    glyph_lelzeichen(uv,shift+vec2(43.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(51.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(56.*spac,-9.),phi,scale,distort,d);
     glyph_dot(uv,shift+vec2(61.*spac,-9.),phi,scale,distort,d);
@@ -165,7 +165,7 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
         lp2dnoise(4.*exp(.2*(t-shift_t))*t, rndshift);
         rndshift *= .007;
         phrase_dotdotdotlelzeichennolelzeichenevokelelzeichendotdotdot(uv-rndshift,vec2(0.,y),0.,spac,dst,spac,d);
-        col = mix(col, c.xxx, 3. * alpha * sm(d-.005, blur));
+        col = mix(col, mix(col,c.xxx,.5), 3. * alpha * sm(d-.005, blur));
         
         fragColor = vec4(clamp(col,0.,1.),1.); // qm hack fragColor -> fragColor
     }
