@@ -254,6 +254,41 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
         glyph_eggsclamation(uv,shift+vec2(26.*spac,-9.),phi,scale,alpha,distort,d);
                 col = mix(col, c.yyy, alpha * sm(d, blur));
             }
+            void phrase_NOVOQUE(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, in float spac, out float d)
+            {
+                d = 1.;
+                glyph_N(uv,shift+vec2(-42.*spac,-9.),phi,scale,distort,d);
+        glyph_O(uv,shift+vec2(-30.*spac,-9.),phi,scale,distort,d);
+        glyph_V(uv,shift+vec2(-18.*spac,-9.),phi,scale,distort,d);
+        glyph_O(uv,shift+vec2(-7.*spac,-10.),phi,scale,distort,d);
+        glyph_Q(uv,shift+vec2(6.*spac,-9.),phi,scale,distort,d);
+        glyph_U(uv,shift+vec2(18.*spac,-9.),phi,scale,distort,d);
+        glyph_E(uv,shift+vec2(30.*spac,-9.),phi,scale,distort,d);
+            }
+void trigger_NOVOQUE(in vec2 uv, in float t, in float start_t, inout vec3 col) {
+        vec2 rndshift;
+        lp2dnoise(3.*t, rndshift);
+        rndshift *= .7;
+        float dst = .93;
+        t -= start_t;
+        if (t < 0. || t > 2.) // after 2sec. it should be over, if not, extend this
+        {
+            return;
+        }
+        float stutter = (t < 0.2) ? round(fract(100.*t)) : 1.;
+        float scale = 1. + t * 3.;	
+        float alpha = exp(-4.*t)*stutter;
+        float spac = 1.-.2*t;
+
+//        col = mix(col, c.yyy, .3*exp(-10.*t)); // drop
+		float d;
+        phrase_NOVOQUE(uv,-rndshift,0.,scale,dst,spac,d);
+        col = mix(col, mix(col*col*col, c.yyy, .3), alpha*sm(d-CONTOUR, 1.));
+        col = mix(col, c.xxx, alpha * sm(d-.0005, 1.));        
+        phrase_NOVOQUE(uv,rndshift,0.,scale,dst,spac,d);
+        col = mix(col, mix(col*col*col, c.yyy, .3), alpha*sm(d-CONTOUR, 1.));
+        col = mix(col, c.xxx, alpha * sm(d-.0005, 1.));            
+    }
 float bpm = 148.797; //162.00
 
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
@@ -269,31 +304,12 @@ float bpm = 148.797; //162.00
         float scale = 1.;
         float stutter = 1.;
         float spac = 1.;
+
+        trigger_NOVOQUE(uv, t, 0., col);
         lf2dnoise(vec2(2.*iTime, 4.*iTime), rndshift);
         rndshift *= 1.7 * decay; 
         float start_t = 0.;
-        if (t < 3.) {
-            alpha *= clamp(2.*(t-start_t), 0., 1.) * exp(-(t-start_t));
-        	phrase_dotdotdotnolelzeichenevokequestschn(uv,vec2(0.,0.),0.,scale,alpha,1.,dst,1.,col);
-//        	phrase_dotdotdotnolelzeichenevokequestschn(uv,rndshift,0.,scale,alpha,1.,dst,1.,col);
-        } else if (t < 6.) {
-            start_t = 3.;
-            stutter = (t - start_t < 0.2) ? round(fract(100.*t)) : 1.;
-            scale = 1.2 + (t - start_t) * 4.;
-            alpha = .7*exp(-4.*(t-start_t));
-            rndshift *= .7;
-            spac = 1.-.2*(t-start_t);
-        	phrase_NOVOQUE(uv,-rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-        	phrase_NOVOQUE(uv,rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-            if (t > 3.5) {
-                start_t = 3.5;
-        	    scale = 1.2 + (t - start_t) * 4.;
-    	        alpha = .7*exp(-4.*(t-start_t));
-	            rndshift *= 1.7;
-    	    	phrase_NOVOQUE(uv,-rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-	        	phrase_NOVOQUE(uv,rndshift,0.,scale,alpha*stutter,1.,dst,spac,col);
-            }   
-        } else if (t < 9.) {
+        if (t >= 7. && t < 9.) {
             start_t = 6.;
             stutter = (fract(t - start_t) < 0.2) ? round(fract(100.*t)) : 1.;
             decay = 1. - (t - start_t < .5 ? fract(t*2.) : exp(-(t-start_t)));
@@ -314,7 +330,8 @@ float bpm = 148.797; //162.00
             }
         }
         vec4 old = texture(iChannel0, fragCoord.xy/iResolution.xy);
-        fragColor = mix(old, mix(old, c.xxxx, 1.), 1.-col.r);
+        fragColor = mix(old, mix(old, c.xxxx, .5), 1.-col.r);
+        fragColor.a = 1.;
         //fragColor = vec4(clamp(c.xxx - col,0.,1.),1.); // qm hack fragColor -> gl_FragColor
     }    
 

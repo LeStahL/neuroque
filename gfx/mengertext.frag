@@ -291,10 +291,14 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
         vec2 shift = vec2(0);
         
         // EXAMPLES OF TRIGGERING NOVOQUE
-        trigger_NOVOQUE(uv, t, 1., col);
-        trigger_NOVOQUE(uv, t, 6., col);
+        trigger_NOVOQUE(uv, t, 0., col);
+        trigger_NOVOQUE(uv, t, 5.5, col);
         trigger_NOVOQUE(uv, t, 11., col);
-        trigger_NOVOQUE(uv, t, 16., col);
+        trigger_NOVOQUE(uv, t, 16.5, col);
+        trigger_NOVOQUE(uv, t, 22., col);
+        trigger_NOVOQUE(uv, t, 27.5, col);
+        trigger_NOVOQUE(uv, t, 33., col);
+        trigger_NOVOQUE(uv, t, 38.5, col);
 
         
         t -= shift_t; // DELAY BEFORE FIRST THING
