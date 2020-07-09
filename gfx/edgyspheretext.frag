@@ -23,12 +23,14 @@ uniform sampler2D iChannel0;
 uniform float iScale;
 uniform float iNBeats;
 
-
+    #define PIXEL .005
+    #define CONTOUR .01
+    #define DARKBORDER 0.1
+    #define DARKENING col*col*col
 const vec3 c = vec3(1.,0.,-1.);
     
 
      // nr4 advice: hardcode replace these
-    #define PIXEL .005
 
     float smstep(float a, float b, float x) {return smoothstep(a, b, clamp(x, a, b));}
     void rand(in vec2 x, out float n)
@@ -178,6 +180,9 @@ rect(uv,vec4(5,5,1,2),shift,phi,scale,distort,d);rect(uv,vec4(5,5,3,1),shift,phi
 void glyph_eggsclamation(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float distort, inout float d){
 rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,phi,scale,distort,d);rect(uv,vec4(3,0,2,1),shift,phi,scale,distort,d);rect(uv,vec4(1,1,2,9),shift,phi,scale,distort,d);rect(uv,vec4(1,6,3,2),shift,phi,scale,distort,d);rect(uv,vec4(2,12,1,3),shift,phi,scale,distort,d);rect(uv,vec4(2,12,2,2),shift,phi,scale,distort,d);rect(uv,vec4(1,13,2,2),shift,phi,scale,distort,d);
 }
+void glyph_I_big(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, inout float d);
+void glyph_L_big(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, inout float d);
+
     void phrase_dotdotdotnolelzeichenevokequestschn(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float blur, in float distort, in float spac, inout vec3 col)
             {
                 float d = 1.;
@@ -219,6 +224,7 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
         glyph_dot(uv,shift+vec2(40.*spac,-9.),phi,scale,alpha,distort,d);
                 col = mix(col, c.yyy, alpha * sm(d, blur));
             }
+
     void phrase_Augustlelzeichen15th(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float blur, in float distort, in float spac, inout vec3 col)
             {
                 float d = 1.;
@@ -234,36 +240,29 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
         glyph_t(uv,shift+vec2(36.5*spac,-9.),phi,scale,alpha,distort,d);
         glyph_h(uv,shift+vec2(44.5*spac,-10.),phi,scale,alpha,distort,d);
                 col = mix(col, c.yyy, alpha * sm(d, blur));
-            }void phrase_2020(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float blur, in float distort, in float spac, inout vec3 col)
+            }void phrase_Onlineeggsclamation(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float blur, in float distort, in float spac, inout vec3 col)
             {
                 float d = 1.;
-                glyph_2(uv,shift+vec2(-24.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_0(uv,shift+vec2(-12.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_2(uv,shift+vec2(0.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_0(uv,shift+vec2(12.*spac,-9.),phi,scale,alpha,distort,d);
-                col = mix(col, c.yyy, alpha * sm(d, blur));
-            }    void phrase_Onlineeggsclamation(in vec2 uv, in vec2 shift, in float phi, in float scale, in float alpha, in float blur, in float distort, in float spac, inout vec3 col)
-            {
-                float d = 1.;
-                glyph_O(uv,shift+vec2(-33.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_n(uv,shift+vec2(-20.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_l(uv,shift+vec2(-11.*spac,-8.),phi,scale,alpha,distort,d);
-        glyph_i(uv,shift+vec2(-1.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_n(uv,shift+vec2(4.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_e(uv,shift+vec2(16.*spac,-9.),phi,scale,alpha,distort,d);
+                glyph_O(uv,shift+vec2(-33.*spac,-9.),phi,scale,alpha,distort,d); // 13
+        glyph_n(uv,shift+vec2(-20.*spac,-9.),phi,scale,alpha,distort,d); // 9
+        glyph_l(uv,shift+vec2(-11.*spac,-8.),phi,scale,alpha,distort,d); // 10
+        glyph_i(uv,shift+vec2(-1.*spac,-9.),phi,scale,alpha,distort,d);        // 5 
+        glyph_n(uv,shift+vec2(4.*spac,-9.),phi,scale,alpha,distort,d); // 12
+        glyph_e(uv,shift+vec2(16.*spac,-9.),phi,scale,alpha,distort,d); // 26
         glyph_eggsclamation(uv,shift+vec2(26.*spac,-9.),phi,scale,alpha,distort,d);
                 col = mix(col, c.yyy, alpha * sm(d, blur));
             }
+
             void phrase_NOVOQUE(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, in float spac, out float d)
             {
                 d = 1.;
-                glyph_N(uv,shift+vec2(-42.*spac,-9.),phi,scale,distort,d);
-        glyph_O(uv,shift+vec2(-30.*spac,-9.),phi,scale,distort,d);
-        glyph_V(uv,shift+vec2(-18.*spac,-9.),phi,scale,distort,d);
-        glyph_O(uv,shift+vec2(-7.*spac,-10.),phi,scale,distort,d);
-        glyph_Q(uv,shift+vec2(6.*spac,-9.),phi,scale,distort,d);
-        glyph_U(uv,shift+vec2(18.*spac,-9.),phi,scale,distort,d);
-        glyph_E(uv,shift+vec2(30.*spac,-9.),phi,scale,distort,d);
+                glyph_N(uv,shift+vec2(-42.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_O(uv,shift+vec2(-30.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_V(uv,shift+vec2(-18.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_O(uv,shift+vec2(-7.*spac,-10.),phi,scale,1.,distort,d);
+        glyph_Q(uv,shift+vec2(6.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_U(uv,shift+vec2(18.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_E(uv,shift+vec2(30.*spac,-9.),phi,scale,1.,distort,d);
             }
 void trigger_NOVOQUE(in vec2 uv, in float t, in float start_t, inout vec3 col) {
         vec2 rndshift;
@@ -293,9 +292,9 @@ float bpm = 148.797; //162.00
 
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
-        float t = mod(iTime, 15.);
+        float t = iTime; // mod(iTime, 27.5);
         vec2 uv = (fragCoord.xy-.5*iResolution.xy)/iResolution.y; // qm hack
-        
+
         vec3 col = c.xxx;
         float dst = .93;
         vec2 rndshift;
@@ -306,29 +305,60 @@ float bpm = 148.797; //162.00
         float spac = 1.;
 
         trigger_NOVOQUE(uv, t, 0., col);
+        trigger_NOVOQUE(uv, t, 9., col);
+        trigger_NOVOQUE(uv, t, 22., col);
+
         lf2dnoise(vec2(2.*iTime, 4.*iTime), rndshift);
         rndshift *= 1.7 * decay; 
         float start_t = 0.;
-        if (t >= 7. && t < 9.) {
+        if (t >= 6. && t < 9.) {
             start_t = 6.;
             stutter = (fract(t - start_t) < 0.2) ? round(fract(100.*t)) : 1.;
             decay = 1. - (t - start_t < .5 ? fract(t*2.) : exp(-(t-start_t)));
             alpha *= decay*stutter;
         	phrase_nolelzeichenevokedot(uv,vec2(0.,0.),0.,scale,alpha,1.,dst,1.,col);
         	phrase_nolelzeichenevokedot(uv,.3*rndshift,0.,scale,alpha,1.,dst,1.,col);
-        } else if (t < 15.) {
-            spac = 1. + 10. * exp(-9.*(t-9.));
-            float help = 1./spac;
+
+        } else if (t >= 11. && t < 22.) {
+            scale = 1;
+            spac = 1. + 10. * exp(-9.*(t-11.));
             float rnd1;
             lpnoise(iTime, 100., rnd1);
-            alpha = help * 1.3 * rnd1;
-            phrase_Augustlelzeichen15th(uv,vec2(0.,-10.),0.,spac,alpha,help*help,.93,spac,col);
-            if (t > 12.){
-            	spac = 1. + 10. * exp(-9.*(t-12.));
-                help = 1./spac;
-            	phrase_Onlineeggsclamation(uv,vec2(0.,8.),0.,spac,alpha,help*help,.93,spac,col);
+            alpha = .2 + 1.4*rnd1;
+            float blur = 1.;
+            float stay_t = 10.;
+            start_t = 11.;
+            if (t > start_t + stay_t ) {
+                float decay = pow(t-start_t-stay_t, 2.);
+                blur = exp(-6.4*decay);
+                alpha *= exp(-1.4*decay);
             }
+            phrase_Augustlelzeichen15th(uv,vec2(0.,36.),0.,scale*spac,.6*alpha,blur,.93,spac,col);
+            if (t > 16.){
+            	spac = 1.2 + 25. * exp(-9.*(t-16.));
+            	phrase_Onlineeggsclamation(uv,vec2(0.,-39.),0.,scale,alpha,blur,.93,spac,col);
+            }        
         }
+        else if (t >= 25. && t < 33.) {
+            scale = 1;
+            spac = 1. + 10. * exp(-9.*(t-25.));
+            float rnd1;
+            lpnoise(iTime, 100., rnd1);
+            alpha = .2 + 1.4*rnd1;
+            float blur = 1.;
+            float stay_t = 6.;
+            start_t = 25.;
+            if (t > start_t + stay_t ) {
+                float decay = pow(t-start_t-stay_t, 2.);
+                blur = exp(-6.4*decay);
+                alpha *= exp(-1.4*decay);
+            }
+            phrase_Augustlelzeichen15th(uv,vec2(0.,36.),0.,scale*spac,.6*alpha,blur,.93,spac,col);
+            if (t > 27.5){
+            	spac = 1.2 + 25. * exp(-9.*(t-27.5));
+            	phrase_Onlineeggsclamation(uv,vec2(0.,-39.),0.,scale,alpha,blur,.93,spac,col);
+            }        
+        }        
         vec4 old = texture(iChannel0, fragCoord.xy/iResolution.xy);
         fragColor = mix(old, mix(old, c.xxxx, .5), 1.-col.r);
         fragColor.a = 1.;
@@ -339,3 +369,4 @@ void main()
 {
     mainImage(gl_FragColor, gl_FragCoord.xy);
 }
+

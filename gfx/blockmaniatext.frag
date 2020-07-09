@@ -29,6 +29,9 @@ const vec3 c = vec3(1.,0.,-1.);
 
      // nr4 advice: hardcode replace these
     #define PIXEL .005
+    #define CONTOUR .01
+    #define DARKBORDER 0.1
+    #define DARKENING col*col*col    
 
     float smstep(float a, float b, float x) {return smoothstep(a, b, clamp(x, a, b));}
     void rand(in vec2 x, out float n)
@@ -257,13 +260,13 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
                 void phrase_NOVOQUE(in vec2 uv, in vec2 shift, in float phi, in float scale, in float distort, in float spac, out float d)
             {
                 d = 1.;
-                glyph_N(uv,shift+vec2(-42.*spac,-9.),phi,scale,distort,d);
-        glyph_O(uv,shift+vec2(-30.*spac,-9.),phi,scale,distort,d);
-        glyph_V(uv,shift+vec2(-18.*spac,-9.),phi,scale,distort,d);
-        glyph_O(uv,shift+vec2(-7.*spac,-10.),phi,scale,distort,d);
-        glyph_Q(uv,shift+vec2(6.*spac,-9.),phi,scale,distort,d);
-        glyph_U(uv,shift+vec2(18.*spac,-9.),phi,scale,distort,d);
-        glyph_E(uv,shift+vec2(30.*spac,-9.),phi,scale,distort,d);
+                glyph_N(uv,shift+vec2(-42.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_O(uv,shift+vec2(-30.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_V(uv,shift+vec2(-18.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_O(uv,shift+vec2(-7.*spac,-10.),phi,scale,1.,distort,d);
+        glyph_Q(uv,shift+vec2(6.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_U(uv,shift+vec2(18.*spac,-9.),phi,scale,1.,distort,d);
+        glyph_E(uv,shift+vec2(30.*spac,-9.),phi,scale,1.,distort,d);
             }
 void trigger_NOVOQUE(in vec2 uv, in float t, in float start_t, inout vec3 col) {
         vec2 rndshift;
@@ -310,26 +313,14 @@ trigger_NOVOQUE(uv, t, 0., col);
         lf2dnoise(vec2(2.*iTime, 4.*iTime), rndshift);
         rndshift *= 1.7 * decay; 
         float start_t = 0.;
-        if (if t >= 7. && t < 9.) {
+        if (t >= 7. && t < 9.) {
             start_t = 6.;
             stutter = (fract(t - start_t) < 0.2) ? round(fract(100.*t)) : 1.;
             decay = 1. - (t - start_t < .5 ? fract(t*2.) : exp(-(t-start_t)));
             alpha *= decay*stutter;
         	phrase_nolelzeichenevokedot(uv,vec2(0.,0.),0.,scale,alpha,1.,dst,1.,col);
         	phrase_nolelzeichenevokedot(uv,.3*rndshift,0.,scale,alpha,1.,dst,1.,col);
-        } else if (t < 15.) {
-            spac = 1. + 10. * exp(-9.*(t-9.));
-            float help = 1./spac;
-            float rnd1;
-            lpnoise(iTime, 100., rnd1);
-            alpha = help * 1.3 * rnd1;
-            phrase_Augustlelzeichen15th(uv,vec2(0.,-10.),0.,spac,alpha,help*help,.93,spac,col);
-            if (t > 12.){
-            	spac = 1. + 10. * exp(-9.*(t-12.));
-                help = 1./spac;
-            	phrase_Onlineeggsclamation(uv,vec2(0.,8.),0.,spac,alpha,help*help,.93,spac,col);
-            }
-        }
+        } 
         vec4 old = texture(iChannel0, fragCoord.xy/iResolution.xy);
         fragColor = mix(old, mix(old, c.xxxx, .5), 1.-col.r);
         fragColor.a = 1.;
