@@ -1,19 +1,11 @@
 #version 130
-const float pi = acos(-1.);
-void rgb2hsv(in vec3 rgb, out vec3 hsv)
+void rgb2hsv(in vec3 c, out vec3 b)
 {
-    float MAX = max(rgb.r, max(rgb.g, rgb.b)),
-        MIN = min(rgb.r, min(rgb.g, rgb.b)),
-        C = MAX-MIN;
-    
-    if(MAX == MIN) hsv.x = 0.;
-    else if(MAX == rgb.r) hsv.x = pi/3.*(rgb.g-rgb.b)/C;
-    else if(MAX == rgb.g) hsv.x = pi/3.*(2.+(rgb.b-rgb.r)/C);
-    else if(MAX == rgb.b) hsv.x = pi/3.*(4.+(rgb.r-rgb.g)/C);
-    hsv.x = mod(hsv.x, 2.*pi);
-        
-    if(MAX == 0.) hsv.y = 0.;
-    else hsv.y = (MAX-MIN)/MAX;
-        
-    hsv.z = MAX;
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    b = vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
