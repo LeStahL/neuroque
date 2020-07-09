@@ -29,78 +29,16 @@ out vec4 gl_FragColor;
 const vec3 c = vec3(1.,0.,-1.);
 const float pi = acos(-1.);
 
-void rand(in vec2 x, out float n)
-{
-    x += 400.;
-    n = fract(sin(dot(sign(x)*abs(x) ,vec2(12.9898,78.233)))*43758.5453);
-}
-
-void lfnoise(in vec2 t, out float n)
-{
-    vec2 i = floor(t);
-    t = fract(t);
-    t = smoothstep(c.yy, c.xx, t);
-    vec2 v1, v2;
-    rand(i, v1.x);
-    rand(i+c.xy, v1.y);
-    rand(i+c.yx, v2.x);
-    rand(i+c.xx, v2.y);
-    v1 = c.zz+2.*mix(v1, v2, t.y);
-    n = mix(v1.x, v1.y, t.x);
-}
-
-void mfnoise(in vec2 x, in float d, in float b, in float e, out float n)
-{
-    n = 0.;
-    float a = 1., nf = 0., buf;
-    for(float f = d; f<b; f *= 2.)
-    {
-        lfnoise(f*x, buf);
-        n += a*buf;
-        a *= e;
-        nf += 1.;
-    }
-    n *= (1.-e)/(1.-pow(e, nf));
-}
-
-void cnoise(in float x, out float n)
-{
-    float x1 = floor(x), 
-        x2 = ceil(x),
-        h1, h2;
-    rand(x1*c.xx, h1);
-    rand(x2*c.xx, h2);
-    x = fract(x);
-    
-    float a = .5*(1.-abs(h1-h2)/sqrt(3.));
-    n = clamp(sqrt(3.)*mix(1.-x,x,step(h1,h2))+.5*(h1+h2-sqrt(3.)), min(h1,h2), max(h1,h2));
-}
-
-void dlinesegment(in vec2 x, in vec2 p1, in vec2 p2, out float d)
-{
-    vec2 da = p2-p1;
-    d = length(x-mix(p1, p2, clamp(dot(x-p1, da)/dot(da,da),0.,1.)));
-}
-
+void rand(in vec2 x, out float n);
+void lfnoise(in vec2 t, out float n);
+void mfnoise(in vec2 x, in float d, in float b, in float e, out float n);
+void dlinesegment(in vec2 x, in vec2 p1, in vec2 p2, out float d);
 float sm(in float d)
 {
     return smoothstep(1.5/iResolution.y, -1.5/iResolution.y, d);
 }
-
-// Extrusion
-void zextrude(in float z, in float d2d, in float h, out float d)
-{
-    vec2 w = vec2(d2d, abs(z)-0.5*h);
-    d = min(max(w.x,w.y),0.0) + length(max(w,0.0));
-}
-
-// iq's smooth minimum
-void smoothmin(in float a, in float b, in float k, out float dst)
-{
-    float h = max( k-abs(a-b), 0.0 )/k;
-    dst = min( a, b ) - h*h*h*k*(1.0/6.0);
-}
-
+void zextrude(in float z, in float d2d, in float h, out float d);
+void smoothmin(in float a, in float b, in float k, out float dst);
 void main()
 {
     vec2 uv = (gl_FragCoord.xy -.5*iResolution.xy)/iResolution.y;
