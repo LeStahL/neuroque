@@ -23,117 +23,20 @@ const float box_size = .4,
     depth = 7.,
     dz = -.01;
 
-void rand(in vec2 x, out float n)
-{
-    x += 400.;
-    n = fract(sin(dot(sign(x)*abs(x) ,vec2(12.9898,78.233)))*43758.5453);
-}
-
-void lfnoise(in vec2 t, out float n)
-{
-    vec2 i = floor(t);
-    t = fract(t);
-    t = smoothstep(c.yy, c.xx, t);
-    vec2 v1, v2;
-    rand(i, v1.x);
-    rand(i+c.xy, v1.y);
-    rand(i+c.yx, v2.x);
-    rand(i+c.xx, v2.y);
-    v1 = c.zz+2.*mix(v1, v2, t.y);
-    n = mix(v1.x, v1.y, t.x);
-}
-
-void mfnoise(in vec2 x, in float d, in float b, in float e, out float n)
-{
-    n = 0.;
-    float a = 1., nf = 0., buf;
-    for(float f = d; f<b; f *= 2.)
-    {
-        lfnoise(f*x, buf);
-        n += a*buf;
-        a *= e;
-        nf += 1.;
-    }
-    n *= (1.-e)/(1.-pow(e, nf));
-}
-
-void dbox3(in vec3 x, in vec3 b, out float d)
-{
-  vec3 da = abs(x) - b;
-  d = length(max(da,0.0))
-         + min(max(da.x,max(da.y,da.z)),0.0);
-}
-
-void dbox3_wireframe(in vec3 x, in vec3 b, in float db, out float d)
-{
-    dbox3(x,b,d);
-    
-    float da;
-    dbox3(x, b+c.zzx*db, da);
-    d = max(d, -da);
-    dbox3(x, b+c.xzz*db, da);
-    d = max(d, -da);
-    dbox3(x, b+c.zxz*db, da);
-    d = max(d, -da);
-}
-
- void zextrude(in float z, in float d2d, in float h, out float d)
- {
-     vec2 w = vec2(d2d, abs(z)-0.5*h);
-     d = min(max(w.x,w.y),0.0) + length(max(w,0.0));
- }
-
+void rand(in vec2 x, out float n);
+void lfnoise(in vec2 t, out float n);
+void mfnoise(in vec2 x, in float d, in float b, in float e, out float n);
+void dbox3(in vec3 x, in vec3 b, out float d);
+void dbox3_wireframe(in vec3 x, in vec3 b, in float db, out float d);
+ void zextrude(in float z, in float d2d, in float h, out float d);
 float sm(in float d)
 {
     return smoothstep(1.5/iResolution.y, -1.5/iResolution.y, d);
 }
-
-void add(in vec2 sda, in vec2 sdb, out vec2 sdf)
-{
-    sdf = (sda.x<sdb.x)?sda:sdb;
-}
-
-void dlinesegment(in vec2 x, in vec2 p1, in vec2 p2, out float d)
-{
-    vec2 da = p2-p1;
-    d = length(x-mix(p1, p2, clamp(dot(x-p1, da)/dot(da,da),0.,1.)));
-}
-
-void dquad(in vec2 x, in vec2 p0, in vec2 p1, in vec2 p2, in vec2 p3, out float ret)
-{
-    vec2 pts[4] = vec2[4](p0,p1,p2,p3);
-	float n = 0., ls;
-    ret = 1.;
-    
-    for(int i=0; i<4; ++i)
-    {
-        int ip1 = int(mod(float(i+1), float(4)));
-        vec2 k = x-pts[i], d = pts[ip1]-pts[i];
-        
-        float beta = k.y/d.y,
-            alpha = d.x*k.y/d.y-k.x;
-        
-        n += step(0., beta)*step(beta, 1.)*step(0., alpha);
-        dlinesegment(x, pts[i], pts[ip1], ls);
-        ret = min(ret, ls);
-    }
-    
-    ret = mix(ret, -ret, mod(n, 2.));
-}
-
-vec2 pj(in vec2 x, in int j, in float N)
-{
-    float p = float(j)*2.*pi/N;
-    return vec2(cos(p), sin(p));
-}
-
-void rot3(in vec3 p, out mat3 rot)
-{
-    rot = mat3(c.xyyy, cos(p.x), sin(p.x), 0., -sin(p.x), cos(p.x))
-        *mat3(cos(p.y), 0., -sin(p.y), c.yxy, sin(p.y), 0., cos(p.y))
-        *mat3(cos(p.z), -sin(p.z), 0., sin(p.z), cos(p.z), c.yyyx);
-}
-
+void add(in vec2 sda, in vec2 sdb, out vec2 sdf);
+void dlinesegment(in vec2 x, in vec2 p1, in vec2 p2, out float d);
+void dquad(in vec2 x, in vec2 p0, in vec2 p1, in vec2 p2, in vec2 p3, out float ret);
+void rot3(in vec3 p, out mat3 rot);
 mat3 R;
 void main_scene(in vec3 x, out vec2 sdf)
 {
@@ -257,73 +160,7 @@ void illuminate(in vec3 x, in vec3 n, in vec3 dir, in vec3 l, inout vec3 col, in
 
 float a = 1.0;
 
-void dbox210(in vec3 x, in float size, out vec2 sdf)
-{
-    x /= size;
-    
-    float d = 1.;
-    
-    // Big red box    
-    dbox3(x, .2*c.xxx, sdf.x);
-    sdf.y = 1.;
-    
-    // Holes
-    
-    // 2 upper bar
-    dbox3(x-.1*c.xyy, vec3(.02,.3,.12), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 2 right bar
-    dbox3(x-.05*c.xyy-.1*c.yyx, vec3(.07,.3,.02), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 2 mid bar
-    dbox3(x, vec3(.02,.3,.1), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 2 left bar
-    dbox3(x+.05*c.xyy+.1*c.yyx, vec3(.07,.3,.02), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 2 dot
-    dbox3(x+.1*c.xyy-.1*c.yyx, vec3(.02,.3,.02), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 1 bar
-    dbox3(x+.04*c.yyx, vec3(.3,.02,.08), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 1 dot
-    dbox3(x-.1*c.yyx, vec3(.3,.02,.02), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    // 0 big stripes
-    vec3 y = vec3(x.x, abs(x.y), x.z);
-    dbox3(y-.05*c.yxy, vec3(.1,.03,.3), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-
-	// 0 small stripes
-    dbox3(y-.1*c.yxy-.06*c.xyy, vec3(.08,.021,.3), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-
-    // 0 upper/lower stripes
-    vec3 z = vec3(abs(x.x), x.yz);
-	dbox3(z-.119*c.xyy, vec3(.021,.08,.3), d);
-    sdf.x = max(-d, sdf.x);
-    sdf.y = mix(sdf.y, 2., step(d, sdf.x));
-    
-    sdf.x *= size;
-}
-
+void dbox210(in vec3 x, in float size, out vec2 sdf);
 void image210( inout vec3 col, in vec2 uv )
 {
     float size = 1.,
@@ -341,69 +178,11 @@ void image210( inout vec3 col, in vec2 uv )
     // col = mix(col, mix(col, vec3(0.87,0.24,0.59), .2), sm(abs(d-.01)-.005));
 }
 
-void dbox(in vec2 x, in vec2 b, out float d)
-{
-    vec2 da = abs(x)-b;
-    d = length(max(da,c.yy)) + min(max(da.x,da.y),0.0);
-}
-
-void dmercury(in vec2 x, out float d)
-{
-    d = -1.;
-    float da;
-
-    x += .1*c.yx;
-
-    // Upper part
-    dbox(x-.35*c.yx,vec2(.4,.35), da);
-    d = max(d, -da);
-    dbox(x-.7*c.yx, vec2(.2,.2), da);
-    d = min(d,da);
-    dbox(x-.25*c.yx,vec2(.2,.05),da);
-    d = min(d,da);
-    
-    // Lower part
-    dbox(x+.2*c.yx,vec2(.1,.4),da);
-    d = max(d, -da);
-    dbox(x+.2*c.yx, vec2(.4,.1),da);
-    d = max(d, -da);
-    
-    d = -d;
-}
-
-void analytical_box(in vec3 o, in vec3 dir, in vec3 size, out float d)
-{
-    vec3 tlo = min((size-o)/dir,(-size-o)/dir); // Select 3 visible planes
-    vec2 abxlo = abs(o.yz + tlo.x*dir.yz),
-        abylo = abs(o.xz + tlo.y*dir.xz),
-        abzlo = abs(o.xy + tlo.z*dir.xy);
-    vec4 dn = 100.*c.xyyy;
-    
-    dn = mix(dn, vec4(tlo.x,c.xyy), float(all(lessThan(abxlo,size.yz)))*step(tlo.x,dn.x));
-    dn = mix(dn, vec4(tlo.y,c.yxy), float(all(lessThan(abylo,size.xz)))*step(tlo.y,dn.x));
-    dn = mix(dn, vec4(tlo.z,c.yyx), float(all(lessThan(abzlo,size.xy)))*step(tlo.z,dn.x));
-
-    d = dn.r;
-}
-
-vec3 rgb2hsv(vec3 c)
-{
-    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-    float d = q.x - min(q.w, q.y);
-    float e = 1.0e-10;
-    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-// All components are in the range [0…1], including hue.
-vec3 hsv2rgb(vec3 c)
-{
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
+void dbox(in vec2 x, in vec2 b, out float d);
+void dmercury(in vec2 x, out float d);
+void analytical_box(in vec3 o, in vec3 dir, in vec3 size, out float d);
+void rgb2hsv(in vec3 c, out vec3 a);
+void hsv2rgb(in vec3 c, out vec3 a);
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
@@ -618,9 +397,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 
     col = mix(col, col * col, iScale);
 
-    vec3 hsv = rgb2hsv(col);
+    vec3 hsv;
+    rgb2hsv(col, hsv);
     hsv.x = .5;
-    col = mix(col, hsv2rgb(hsv), clamp(iTime-19.482+.25,0.,.5)/.5);
+    hsv2rgb(hsv, c1);
+    col = mix(col, c1, clamp(iTime-19.482+.25,0.,.5)/.5);
 
     fragColor = vec4(clamp(col,0.,1.),1.);
 }
