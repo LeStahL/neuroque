@@ -355,7 +355,7 @@ void load_compressed_sound()
     // fread(scale, sizeof(double), fixedSize - 1, f);
     // fclose(f);
 
-    FILE *f = fopen("INTENSITY", "wt");
+    // FILE *f = fopen("INTENSITY", "wt");
     for (int i = 0; i < fixedSize; ++i)
     // // printf("%le\n", scale[i]);
     {

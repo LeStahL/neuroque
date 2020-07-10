@@ -249,7 +249,7 @@ void trigger_NOVOQUE(in vec2 uv, in float t, in float start_t, inout vec3 col) {
         
         if((t >= start_t && t < stop_t) || t >= 9.)
         {
-        float scale = 1.;
+        float scale = .95;
         float dst = 1.;
         vec2 rndshift;
         lp2dnoise(12.*t, rndshift);

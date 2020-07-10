@@ -151,7 +151,7 @@ void glyph_hashtag(in vec2 uv, in vec2 shift, in float phi, in float scale, in f
         // TAKE CARE OF THIS
         // float t = mod(iTime, 10.);
         float t = iTime;
-        float shift_t = 0.;
+        float shift_t = 2.;
         
         float y = -52. + 4.4*(t-shift_t) * exp(-.1*(t-shift_t));
         float spac = 1. + 10. * exp(-2.*(t-shift_t));

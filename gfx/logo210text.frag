@@ -212,7 +212,7 @@ rect(uv,vec4(1,0,1,10),shift,phi,scale,distort,d);rect(uv,vec4(3,0,1,5),shift,ph
                 glyph_n(uv,shift+vec2(-46.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_o(uv,shift+vec2(-34.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_lelzeichen(uv,shift+vec2(-22.*spac,-9.),phi,scale,alpha,distort,d);
-        glyph_e(uv,shift+vec2(-14.*spac,-9.),phi,sca,le,alpha,distort,d);
+        glyph_e(uv,shift+vec2(-14.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_v(uv,shift+vec2(-4.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_o(uv,shift+vec2(8.*spac,-9.),phi,scale,alpha,distort,d);
         glyph_k(uv,shift+vec2(20.*spac,-9.),phi,scale,alpha,distort,d);
@@ -259,7 +259,7 @@ float bpm = 148.797; //162.00
 
     void mainImage( out vec4 fragColor, in vec2 fragCoord )
     {
-        fragColor = texture(iChannel0, fragCoord.xy);
+        fragColor = texture(iChannel0, fragCoord.xy/iResolution.xy);
     }    
 
 void main()
